@@ -1,5 +1,6 @@
 .searchForm {
   margin: 0 auto;
+  display: flex;
 
   input {
     color: white;

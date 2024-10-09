@@ -1,9 +1,6 @@
 import React from "react";
 import cl from "./Counter.module.css";
-
-interface ICounterProps {
-  initValue: number;
-}
+import { ICounterProps } from "../../types";
 
 class Counter extends React.Component<ICounterProps> {
   state = {

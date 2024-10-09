@@ -1,11 +1,6 @@
 import { FC } from "react";
 import cl from "./Button.module.css";
-
-interface IButtonProps {
-  children?: string;
-  onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-  type?: "submit" | "reset" | "button" | undefined;
-}
+import { IButtonProps } from "../../../types";
 
 const Button: FC<IButtonProps> = ({ onClick, type, children }) => {
   return (

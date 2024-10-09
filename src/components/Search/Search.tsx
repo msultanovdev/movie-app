@@ -1,12 +1,7 @@
 import React, { FC, useState } from "react";
 import cl from "./Search.module.css";
 import Button from "../UI/Button/Button";
-
-interface ISearchProps {
-  initSearchQuery?: string;
-  onSearch: () => void;
-  style?: React.CSSProperties;
-}
+import { ISearchProps } from "../../types";
 
 const Search: FC<ISearchProps> = ({ initSearchQuery, onSearch, ...props }) => {
   const [query, setQuery] = useState(initSearchQuery ?? "");

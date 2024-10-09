@@ -1,10 +1,7 @@
 import { FC } from "react";
 import cl from "./GenreSelect.module.css";
-interface IGenreSelectProps {
-  genres: string[];
-  selectedGenre: string;
-  onSelect: (genre: string) => void;
-}
+import { IGenreSelectProps } from "../../types";
+
 
 const GenreSelect: FC<IGenreSelectProps> = ({
   genres,

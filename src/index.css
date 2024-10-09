@@ -3,3 +3,9 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+body {
+  background-color: #232323;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}

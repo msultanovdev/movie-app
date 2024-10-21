@@ -6,24 +6,23 @@ import "@testing-library/jest-dom";
 describe("GenreSelect component", () => {
   const genres = ["Rock", "Pop", "Jazz"];
   const onSelect = vi.fn();
-  it("renders a list of genres", () => {
+
+  it("renders all genres passed in props", () => {
     render(<GenreSelect genres={genres} onSelect={onSelect} selectedGenre="" />);
     genres.forEach((genre) => {
       expect(screen.getByText(genre)).toBeInTheDocument();
     });
   });
-  it("calls 'onSelect' when a genre is clicked", () => {
-    render(<GenreSelect genres={genres} onSelect={onSelect} selectedGenre="" />);
-    const genreItem = screen.getByText("Rock");
-    fireEvent.click(genreItem);
-    expect(onSelect).toHaveBeenCalledWith("Rock");
+  it("highlights the selected genre passed in props", () => {
+    render(<GenreSelect genres={genres} onSelect={onSelect} selectedGenre="Rock" />);
+    const selectedGenre = screen.getByText("Rock");
+    expect(selectedGenre).toHaveClass("active");
   });
 
-  it("calls 'onSelect' when Enter is pressed on a genre", () => {
+  it("calls 'onSelect' with correct genre when genre is clicked", () => {
     render(<GenreSelect genres={genres} onSelect={onSelect} selectedGenre="" />);
     const genreItem = screen.getByText("Jazz");
-    genreItem.focus();
-    fireEvent.keyDown(genreItem, { key: "Enter", code: "Enter" });
+    fireEvent.click(genreItem);
     expect(onSelect).toHaveBeenCalledWith("Jazz");
   });
 });

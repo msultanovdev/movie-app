@@ -3,12 +3,14 @@ import { Movie } from '../../types';
 import styles from "./MovieDetails.module.css";
 
 export interface IMovieDetailsProps {
-  movie: Movie
+  movie: Movie;
+  onBackButtonClick: (id: null) => void;
 }
 
-const MovieDetails: FC<IMovieDetailsProps> = ({movie}) => {
+const MovieDetails: FC<IMovieDetailsProps> = ({movie, onBackButtonClick}) => {
   return (
     <div className={styles.container}>
+      <span onClick={() => onBackButtonClick(null)} className={styles.back}>Search</span>
       <img src={movie.image} alt={movie.name + " poster"} className={styles.poster} />
       <div className={styles.details}>
         <div className={styles.header}>

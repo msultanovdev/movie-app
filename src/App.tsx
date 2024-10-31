@@ -15,7 +15,7 @@ const options = [
 ];
 
 function App() {
-  const [selectedMovieId, setSelectedMovieId] = useState<number>();
+  const [selectedMovieId, setSelectedMovieId] = useState<number | null>();
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [selectedGenre, setSelectedGenre] = useState("All");
   const [sortedMovies, setSortedMovies] = useState(movies);
@@ -48,9 +48,9 @@ function App() {
   return (
     <main className="main">
       {selectedMovie ? (
-        <MovieDetails movie={selectedMovie} />
+        <MovieDetails onBackButtonClick={() => setSelectedMovieId(null)} movie={selectedMovie} />
       ) : (
-        <Search onSearch={handleSearch} style={{ marginTop: "10px" }} />
+        <Search onSearch={handleSearch} style={{ margin: "10px 0" }} />
       )}
 
       <div className="movies-sort">

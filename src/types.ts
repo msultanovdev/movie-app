@@ -1,4 +1,8 @@
 export interface ICounterProps {
+  /**
+   * Initial value of counter.
+   * @default 0
+   */
   initValue: number;
 }
 

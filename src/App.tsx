@@ -3,6 +3,8 @@ import "./App.css";
 import Counter from "./components/Counter/Counter";
 import GenreSelect from "./components/GenreSelect/GenreSelect";
 import Search from "./components/Search/Search";
+import MovieList from "./components/MovieList/MovieList";
+import { movies } from "./db";
 
 function App() {
   const [selectedGenre, setSelectedGenre] = useState("All");
@@ -23,6 +25,7 @@ function App() {
         genres={["All", "Documentary", "Comedy", "Horror", "Crime"]}
         selectedGenre={selectedGenre}
       />
+      <MovieList movies={movies} />
       <Counter initValue={0} />
     </main>
   );

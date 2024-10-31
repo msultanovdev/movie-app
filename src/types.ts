@@ -23,3 +23,10 @@ export interface IButtonProps {
   onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   type?: "submit" | "reset" | "button" | undefined;
 }
+
+export type Movie = {
+  name: string;
+  year: string;
+  genres: string[];
+  image: string;
+}

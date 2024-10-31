@@ -20,7 +20,7 @@ describe("MovieTile component", () => {
     render(<MovieTile movie={movie} />);
 
     expect(screen.getByText("Inception")).toBeInTheDocument();
-    expect(screen.getAllByText("2010")[0]).toBeInTheDocument(); // Проверяем первый элемент с годом
+    expect(screen.getAllByText("2010")[0]).toBeInTheDocument();
     expect(screen.getByText("Action Sci-Fi Thriller")).toBeInTheDocument();
   });
 

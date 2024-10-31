@@ -1,19 +1,15 @@
-import { FC } from "react";
+import { FC, HTMLAttributes } from "react";
 import cl from "./MovieTile.module.css";
+import { Movie } from "../../types";
 
-interface IMovieTileProps {
-  movie: {
-    name: string;
-    image: string;
-    year: string;
-    genres: string[];
-  };
+interface IMovieTileProps extends HTMLAttributes<HTMLDivElement> {
+  movie: Movie;
 }
 
-const MovieTile: FC<IMovieTileProps> = ({ movie }) => {
+const MovieTile: FC<IMovieTileProps> = ({ movie, ...props }) => {
   const { name, image, year, genres } = movie;
   return (
-    <div className={cl.poster}>
+    <div {...props} className={cl.poster}>
       <img src={image} alt={`${name} Poster`} className={cl.image} />
       <div className={cl.info}>
         <h1 className={cl.title}>{name}</h1>

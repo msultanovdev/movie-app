@@ -1,0 +1,72 @@
+.container {
+  display: flex;
+  background-color: #222;
+  color: #ccc;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.poster {
+  width: 200px;
+  border-radius: 8px;
+  margin-right: 20px;
+}
+
+.details {
+  max-width: 600px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+}
+
+.title {
+  font-size: 36px;
+  font-weight: bold;
+  color: white;
+  margin-right: 10px;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  border: 2px solid white;
+  border-radius: 50%;
+  padding: 10px;
+  width: 40px;
+  height: 40px;
+}
+
+.genre {
+  color: #aaa;
+  font-size: 16px;
+  margin-top: 5px;
+  text-transform: uppercase;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+  color: red;
+  font-size: 16px;
+}
+
+.year {
+  margin-right: 15px;
+}
+
+.duration {
+  margin-left: 15px;
+}
+
+.description {
+  margin-top: 15px;
+  line-height: 1.6;
+  color: #bbb;
+}

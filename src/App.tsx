@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import Counter from "./components/Counter/Counter";
 import GenreSelect from "./components/GenreSelect/GenreSelect";
@@ -6,6 +6,8 @@ import Search from "./components/Search/Search";
 import MovieList from "./components/MovieList/MovieList";
 import { movies } from "./db";
 import Sort from "./components/Sort/Sort";
+import MovieDetails from "./components/MovieDetails/MovieDetails";
+import { Movie } from "./types";
 
 const options = [
   { value: "release-date", label: "Release Date" },
@@ -13,8 +15,16 @@ const options = [
 ];
 
 function App() {
+  const [selectedMovieId, setSelectedMovieId] = useState<number>();
+  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [selectedGenre, setSelectedGenre] = useState("All");
   const [sortedMovies, setSortedMovies] = useState(movies);
+
+  useEffect(() => {
+    const selectedMovie = movies.filter(movie => movie.id === selectedMovieId);
+    setSelectedMovie(selectedMovie[0]);
+  }, [selectedMovieId]);
+
   const handleSearch = () => {
     console.log("Searching...");
   };
@@ -37,8 +47,12 @@ function App() {
 
   return (
     <main className="main">
-      <Search onSearch={handleSearch} initSearchQuery="Hello" />
-      <Search onSearch={handleSearch} style={{ marginTop: "10px" }} />
+      {selectedMovie ? (
+        <MovieDetails movie={selectedMovie} />
+      ) : (
+        <Search onSearch={handleSearch} style={{ marginTop: "10px" }} />
+      )}
+
       <div className="movies-sort">
         <GenreSelect
           onSelect={handleSelectGenre}
@@ -50,7 +64,7 @@ function App() {
       {movies.length && (
         <p className="movies-count">{movies.length} movies found</p>
       )}
-      <MovieList movies={sortedMovies} />
+      <MovieList onClick={setSelectedMovieId} movies={sortedMovies} />
       <Counter initValue={0} />
     </main>
   );

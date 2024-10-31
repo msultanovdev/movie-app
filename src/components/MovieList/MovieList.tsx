@@ -5,13 +5,14 @@ import cl from "./MovieList.module.css";
 
 export interface IMovieListProps {
   movies: Movie[];
+  onClick: (id: number) => void;
 }
 
-const MovieList: FC<IMovieListProps> = ({ movies }) => {
+const MovieList: FC<IMovieListProps> = ({ movies, onClick }) => {
   return (
     <div className={cl.movieList}>
       {movies.map((movie) => {
-        return <MovieTile movie={movie} />;
+        return <MovieTile onClick={() => onClick(movie.id)} movie={movie} />;
       })}
     </div>
   );

@@ -3,7 +3,7 @@ import { useState } from "react";
 import GenreSelect from "../components/GenreSelect/GenreSelect";
 
 const meta: Meta<typeof GenreSelect> = {
-  title: "Example/GenreSelect",
+  title: "Component/GenreSelect",
   component: GenreSelect,
   parameters: {
     layout: "centered",

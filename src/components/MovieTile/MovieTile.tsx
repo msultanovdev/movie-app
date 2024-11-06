@@ -27,6 +27,11 @@ const MovieTile: FC<IMovieTileProps> = ({ movie, ...props }) => {
     console.log("Delete movie:", name);
     setIsMenuOpen(false);
   };
+
+  const handleClose = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsMenuOpen(false);
+  };
   return (
     <div {...props} className={cl.poster}>
       <button onClick={toggleMenu} className={cl.menuButton}>
@@ -45,7 +50,7 @@ const MovieTile: FC<IMovieTileProps> = ({ movie, ...props }) => {
         <PopupMenu
           onEdit={handleEdit}
           onDelete={handleDelete}
-          onClose={() => setIsMenuOpen(false)}
+          onClose={handleClose}
         />
       )}
     </div>

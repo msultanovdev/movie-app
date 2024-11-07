@@ -5,3 +5,12 @@
   flex-direction: column;
   align-items: center;
 }
+
+.movies-count {
+  color: white;
+}
+.movies-sort {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}

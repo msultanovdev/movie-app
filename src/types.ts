@@ -1,4 +1,8 @@
 export interface ICounterProps {
+  /**
+   * Initial value of counter.
+   * @default 0
+   */
   initValue: number;
 }
 
@@ -19,3 +23,14 @@ export interface IButtonProps {
   onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   type?: "submit" | "reset" | "button" | undefined;
 }
+
+export type Movie = {
+  id: number;
+  name: string;
+  year: string;
+  genres: string[];
+  image: string;
+  rating: number;
+  duration: string;
+  description: string;
+};

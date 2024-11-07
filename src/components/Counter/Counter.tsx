@@ -18,6 +18,12 @@ class Counter extends React.Component<ICounterProps> {
       count: this.state.count - 1,
     });
   };
+  static defaultProps: { initValue: number };
+  componentDidUpdate(prevProps: ICounterProps) {
+    if (prevProps.initValue !== this.props.initValue) {
+      this.setState({ count: this.props.initValue });
+    }
+  }
 
   render() {
     return (
@@ -31,5 +37,9 @@ class Counter extends React.Component<ICounterProps> {
     );
   }
 }
+
+Counter.defaultProps = {
+  initValue: 0,
+};
 
 export default Counter;

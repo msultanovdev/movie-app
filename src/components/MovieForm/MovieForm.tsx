@@ -9,7 +9,7 @@ export interface IMovieFormProps {
 }
 
 const epmtyMovieState: Movie = {
-  id: Date.now(),
+  id: Date.now() + Math.floor(Math.random() * 1000),
   name: "",
   year: "",
   image: "",

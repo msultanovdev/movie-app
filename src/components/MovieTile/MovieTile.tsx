@@ -4,6 +4,7 @@ import { Movie } from "../../types";
 import PopupMenu from "../UI/Popup/Popup";
 import Dialog from "../Dialog/Dialog";
 import MovieForm from "../MovieForm/MovieForm";
+import Button from "../UI/Button/Button";
 
 interface IMovieTileProps extends HTMLAttributes<HTMLDivElement> {
   movie: Movie;
@@ -13,6 +14,7 @@ const MovieTile: FC<IMovieTileProps> = ({ movie, ...props }) => {
   const { name, image, year, genre } = movie;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditModal, setIsEditModal] = useState(false);
+  const [isRemoveConfirmation, setIsRemoveConfirmation] = useState(false);
 
   const toggleMenu = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -27,8 +29,7 @@ const MovieTile: FC<IMovieTileProps> = ({ movie, ...props }) => {
 
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
-    console.log("Delete movie:", name);
-    setIsMenuOpen(false);
+    setIsRemoveConfirmation(true);
   };
 
   const handleClose = (e: React.MouseEvent) => {
@@ -37,7 +38,7 @@ const MovieTile: FC<IMovieTileProps> = ({ movie, ...props }) => {
   };
 
   const handleFormSubmit = (data: Movie) => {
-    console.log('Submitted data:', data);
+    console.log("Submitted data:", data);
   };
 
   return (
@@ -64,6 +65,17 @@ const MovieTile: FC<IMovieTileProps> = ({ movie, ...props }) => {
       {isEditModal && (
         <Dialog title="EDIT" onClose={() => setIsEditModal(false)}>
           <MovieForm initiaMovieState={movie} onSubmit={handleFormSubmit} />
+        </Dialog>
+      )}
+      {isRemoveConfirmation && (
+        <Dialog
+          title="Delete MOVIE"
+          onClose={() => setIsRemoveConfirmation(false)}
+        >
+          <div className={cl.removeConfirmation}>
+            <p>Are you sure you want to delete this movie?</p>
+            <Button>Confirm</Button>
+          </div>
         </Dialog>
       )}
     </div>

@@ -49,7 +49,10 @@
 
 .form-actions {
   display: flex;
-  justify-content: space-between;
+  justify-content: right;
+  button {
+    margin-left: 10px;
+  }
 }
 
 .reset-button,
@@ -61,7 +64,8 @@
 }
 
 .reset-button {
-  background-color: #ff616f;
+  background-color: transparent;
+  border: 1px solid #ff616f;
   color: #fff;
 }
 

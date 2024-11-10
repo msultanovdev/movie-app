@@ -10,6 +10,7 @@ import MovieDetails from "./components/MovieDetails/MovieDetails";
 import { Movie, OverlaysType } from "./types";
 import Overlays from "./layouts/Overlays/Overlays";
 import { AppContext } from "./AppContext";
+import { GlobalScrollbar } from "mac-scrollbar";
 
 const options = [
   { value: "release-date", label: "Release Date" },
@@ -54,6 +55,7 @@ function App() {
     <AppContext.Provider
       value={{ overlays: overlays, setOverlays: setOverlays }}
     >
+      <GlobalScrollbar skin="dark" />
       <main className="main">
         <Overlays />
         {selectedMovie ? (

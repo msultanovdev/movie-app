@@ -3,6 +3,7 @@ import cl from "./MovieTile.module.css";
 import { Movie } from "../../types";
 import PopupMenu from "../UI/Popup/Popup";
 import Dialog from "../Dialog/Dialog";
+import MovieForm from "../MovieForm/MovieForm";
 
 interface IMovieTileProps extends HTMLAttributes<HTMLDivElement> {
   movie: Movie;
@@ -35,6 +36,10 @@ const MovieTile: FC<IMovieTileProps> = ({ movie, ...props }) => {
     setIsMenuOpen(false);
   };
 
+  const handleFormSubmit = (data: Movie) => {
+    console.log('Submitted data:', data);
+  };
+
   return (
     <div {...props} className={cl.poster}>
       <button onClick={toggleMenu} className={cl.menuButton}>
@@ -58,7 +63,7 @@ const MovieTile: FC<IMovieTileProps> = ({ movie, ...props }) => {
       )}
       {isEditModal && (
         <Dialog title="EDIT" onClose={() => setIsEditModal(false)}>
-          <p>This is the content of the dialog.</p>
+          <MovieForm initiaMovieState={movie} onSubmit={handleFormSubmit} />
         </Dialog>
       )}
     </div>

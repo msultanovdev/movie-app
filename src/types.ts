@@ -25,7 +25,7 @@ export interface IButtonProps {
 }
 
 export type Movie = {
-  id: number;
+  id?: number;
   name: string;
   year: string;
   genres: string[];

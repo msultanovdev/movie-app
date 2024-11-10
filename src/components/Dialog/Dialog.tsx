@@ -7,13 +7,19 @@ interface DialogProps {
   title: string | JSX.Element;
   children: React.ReactNode;
   onClose: (e: React.MouseEvent) => void;
+  isFocusTrapActive?: boolean;
 }
 
-const Dialog: React.FC<DialogProps> = ({ title, children, onClose }) => {
+const Dialog: React.FC<DialogProps> = ({
+  title,
+  children,
+  onClose,
+  isFocusTrapActive = true,
+}) => {
   return (
     <Portal>
-      <FocusTrap>
-        <div className="dialog-backdrop" onClick={onClose}>
+      <FocusTrap active={isFocusTrapActive}>
+        <div data-testid="backdrop" className="dialog-backdrop" onClick={onClose}>
           <div className="dialog" onClick={(e) => e.stopPropagation()}>
             <div className="dialog-header">
               <h2>{title}</h2>

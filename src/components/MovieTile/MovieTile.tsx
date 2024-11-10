@@ -1,7 +1,8 @@
-import React, { FC, HTMLAttributes, useState } from "react";
+import React, { FC, HTMLAttributes, useContext, useState } from "react";
 import cl from "./MovieTile.module.css";
 import { Movie } from "../../types";
 import PopupMenu from "../UI/Popup/Popup";
+import { AppContext, AppContextType } from "../../AppContext";
 
 interface IMovieTileProps extends HTMLAttributes<HTMLDivElement> {
   movie: Movie;
@@ -10,6 +11,7 @@ interface IMovieTileProps extends HTMLAttributes<HTMLDivElement> {
 const MovieTile: FC<IMovieTileProps> = ({ movie, ...props }) => {
   const { name, image, year, genres } = movie;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { overlays, setOverlays } = useContext(AppContext) as AppContextType;
 
   const toggleMenu = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -19,7 +21,12 @@ const MovieTile: FC<IMovieTileProps> = ({ movie, ...props }) => {
   const handleEdit = (e: React.MouseEvent) => {
     e.stopPropagation();
     console.log("Edit movie:", name);
-    setIsMenuOpen(false);
+    setOverlays({
+      ...overlays,
+      modal: {
+        title: "Edit",
+      },
+    });
   };
 
   const handleDelete = (e: React.MouseEvent) => {
@@ -32,6 +39,7 @@ const MovieTile: FC<IMovieTileProps> = ({ movie, ...props }) => {
     e.stopPropagation();
     setIsMenuOpen(false);
   };
+
   return (
     <div {...props} className={cl.poster}>
       <button onClick={toggleMenu} className={cl.menuButton}>

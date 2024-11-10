@@ -34,3 +34,9 @@ export type Movie = {
   duration: string;
   description: string;
 };
+
+export type OverlaysType = {
+  modal?: {
+    title: string;
+  } | null;
+}

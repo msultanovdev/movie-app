@@ -7,7 +7,9 @@ import MovieList from "./components/MovieList/MovieList";
 import { movies } from "./db";
 import Sort from "./components/Sort/Sort";
 import MovieDetails from "./components/MovieDetails/MovieDetails";
-import { Movie } from "./types";
+import { Movie, OverlaysType } from "./types";
+import Overlays from "./layouts/Overlays/Overlays";
+import { AppContext } from "./AppContext";
 
 const options = [
   { value: "release-date", label: "Release Date" },
@@ -19,9 +21,12 @@ function App() {
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [selectedGenre, setSelectedGenre] = useState("All");
   const [sortedMovies, setSortedMovies] = useState(movies);
+  const [overlays, setOverlays] = useState<OverlaysType>({});
 
   useEffect(() => {
-    const selectedMovie = movies.filter(movie => movie.id === selectedMovieId);
+    const selectedMovie = movies.filter(
+      (movie) => movie.id === selectedMovieId
+    );
     setSelectedMovie(selectedMovie[0]);
   }, [selectedMovieId]);
 
@@ -46,27 +51,35 @@ function App() {
   };
 
   return (
-    <main className="main">
-      {selectedMovie ? (
-        <MovieDetails onBackButtonClick={() => setSelectedMovieId(null)} movie={selectedMovie} />
-      ) : (
-        <Search onSearch={handleSearch} style={{ margin: "10px 0" }} />
-      )}
+    <AppContext.Provider
+      value={{ overlays: overlays, setOverlays: setOverlays }}
+    >
+      <main className="main">
+        <Overlays />
+        {selectedMovie ? (
+          <MovieDetails
+            onBackButtonClick={() => setSelectedMovieId(null)}
+            movie={selectedMovie}
+          />
+        ) : (
+          <Search onSearch={handleSearch} style={{ margin: "10px 0" }} />
+        )}
 
-      <div className="movies-sort">
-        <GenreSelect
-          onSelect={handleSelectGenre}
-          genres={["All", "Documentary", "Comedy", "Horror", "Crime"]}
-          selectedGenre={selectedGenre}
-        />
-        <Sort options={options} onChange={handleSortChange} />
-      </div>
-      {movies.length && (
-        <p className="movies-count">{movies.length} movies found</p>
-      )}
-      <MovieList onClick={setSelectedMovieId} movies={sortedMovies} />
-      <Counter initValue={0} />
-    </main>
+        <div className="movies-sort">
+          <GenreSelect
+            onSelect={handleSelectGenre}
+            genres={["All", "Documentary", "Comedy", "Horror", "Crime"]}
+            selectedGenre={selectedGenre}
+          />
+          <Sort options={options} onChange={handleSortChange} />
+        </div>
+        {movies.length && (
+          <p className="movies-count">{movies.length} movies found</p>
+        )}
+        <MovieList onClick={setSelectedMovieId} movies={sortedMovies} />
+        <Counter initValue={0} />
+      </main>
+    </AppContext.Provider>
   );
 }
 

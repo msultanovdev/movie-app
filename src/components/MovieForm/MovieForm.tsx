@@ -9,12 +9,13 @@ export interface IMovieFormProps {
 }
 
 const epmtyMovieState: Movie = {
+  id: Date.now(),
   name: "",
   year: "",
   image: "",
   rating: 0,
-  genres: [],
-  duration: "",
+  genre: "",
+  duration: 0,
   description: "",
 };
 
@@ -29,10 +30,11 @@ const MovieForm: FC<IMovieFormProps> = (props) => {
     >
   ) => {
     const { name, value } = e.target;
+    console.log(name);
     setFormData({ ...formData, [name]: value });
   };
   const handleReset = () => {
-    setFormData(epmtyMovieState);
+    setFormData({ ...epmtyMovieState, id: formData.id });
   };
   return (
     <form className="movie-form" onSubmit={() => onSubmit(formData)}>
@@ -41,7 +43,7 @@ const MovieForm: FC<IMovieFormProps> = (props) => {
           <label>Title</label>
           <input
             type="text"
-            name="title"
+            name="name"
             value={formData.name}
             onChange={handleChange}
             placeholder="Moana"
@@ -52,7 +54,7 @@ const MovieForm: FC<IMovieFormProps> = (props) => {
           <label>Release Date</label>
           <input
             type="date"
-            name="releaseDate"
+            name="year"
             value={formData.year}
             onChange={handleChange}
           />
@@ -64,7 +66,7 @@ const MovieForm: FC<IMovieFormProps> = (props) => {
           <label>Movie URL</label>
           <input
             type="url"
-            name="movieUrl"
+            name="image"
             value={formData.image}
             onChange={handleChange}
             placeholder="https://"
@@ -87,7 +89,7 @@ const MovieForm: FC<IMovieFormProps> = (props) => {
       <FlexRow>
         <div className="form-group form-full-input">
           <label>Genre</label>
-          <select name="genre" value={formData.genres} onChange={handleChange}>
+          <select name="genre" value={formData.genre} onChange={handleChange}>
             <option value="">Select Genre</option>
             <option value="Action">Action</option>
             <option value="Adventure">Adventure</option>
@@ -99,7 +101,7 @@ const MovieForm: FC<IMovieFormProps> = (props) => {
           <label>Runtime</label>
           <input
             type="number"
-            name="runtime"
+            name="duration"
             value={formData.duration}
             onChange={handleChange}
             placeholder="minutes"
@@ -110,7 +112,7 @@ const MovieForm: FC<IMovieFormProps> = (props) => {
       <div className="form-group overview">
         <label>Overview</label>
         <textarea
-          name="overview"
+          name="description"
           value={formData.description}
           onChange={handleChange}
           placeholder="Movie description"

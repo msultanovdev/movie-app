@@ -10,7 +10,7 @@ interface IMovieTileProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const MovieTile: FC<IMovieTileProps> = ({ movie, ...props }) => {
-  const { name, image, year, genres } = movie;
+  const { name, image, year, genre } = movie;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditModal, setIsEditModal] = useState(false);
 
@@ -50,7 +50,7 @@ const MovieTile: FC<IMovieTileProps> = ({ movie, ...props }) => {
         <h1 className={cl.title}>{name}</h1>
         <p className={cl.details}>
           <span className={cl.year}>{year}</span>
-          <span className={cl.genre}>{genres.map((g) => `${g} `)}</span>
+          <span className={cl.genre}>{genre}</span>
         </p>
         <p className={cl.releaseDate}>{year}</p>
       </div>

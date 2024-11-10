@@ -25,13 +25,13 @@ export interface IButtonProps {
 }
 
 export type Movie = {
-  id?: number;
+  id: number;
   name: string;
   year: string;
-  genres: string[];
+  genre: string;
   image: string;
   rating: number;
-  duration: string;
+  duration: number;
   description: string;
 };
 

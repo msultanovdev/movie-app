@@ -1,3 +1,5 @@
+import { ButtonHTMLAttributes } from "react";
+
 export interface ICounterProps {
   /**
    * Initial value of counter.
@@ -18,7 +20,7 @@ export interface ISearchProps {
   style?: React.CSSProperties;
 }
 
-export interface IButtonProps {
+export interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children?: string;
   onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   type?: "submit" | "reset" | "button" | undefined;
@@ -39,4 +41,4 @@ export type OverlaysType = {
   modal?: {
     title: string;
   } | null;
-}
+};

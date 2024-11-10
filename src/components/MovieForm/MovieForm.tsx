@@ -2,6 +2,7 @@ import { FC, useState } from "react";
 import "./MovieForm.css";
 import { Movie } from "../../types";
 import FlexRow from "../../layouts/FlexRow/FlexRow";
+import { formatDate } from "../../utils/helper";
 
 export interface IMovieFormProps {
   initiaMovieState?: Movie;
@@ -11,7 +12,7 @@ export interface IMovieFormProps {
 const epmtyMovieState: Movie = {
   id: Date.now() + Math.floor(Math.random() * 1000),
   name: "",
-  year: "",
+  year: formatDate(new Date()),
   image: "",
   rating: 0,
   genre: "",
@@ -30,7 +31,6 @@ const MovieForm: FC<IMovieFormProps> = (props) => {
     >
   ) => {
     const { name, value } = e.target;
-    console.log(name);
     setFormData({ ...formData, [name]: value });
   };
   const handleReset = () => {
@@ -55,7 +55,7 @@ const MovieForm: FC<IMovieFormProps> = (props) => {
           <input
             type="date"
             name="year"
-            value={formData.year}
+            value={formatDate(new Date(formData.year))}
             onChange={handleChange}
           />
         </div>

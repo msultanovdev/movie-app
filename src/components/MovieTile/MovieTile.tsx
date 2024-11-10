@@ -50,10 +50,9 @@ const MovieTile: FC<IMovieTileProps> = ({ movie, ...props }) => {
       <div className={cl.info}>
         <h1 className={cl.title}>{name}</h1>
         <p className={cl.details}>
-          <span className={cl.year}>{year}</span>
+          <span className={cl.year}>{new Date(year).getFullYear()}</span>
           <span className={cl.genre}>{genre}</span>
         </p>
-        <p className={cl.releaseDate}>{year}</p>
       </div>
       {isMenuOpen && (
         <PopupMenu

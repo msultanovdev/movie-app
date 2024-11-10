@@ -1,17 +1,17 @@
 import React, { FC, HTMLAttributes, useState } from "react";
 import cl from "./MovieTile.module.css";
-import { Movie } from "../../types";
 import PopupMenu from "../UI/Popup/Popup";
 import Dialog from "../Dialog/Dialog";
 import MovieForm from "../MovieForm/MovieForm";
 import Button from "../UI/Button/Button";
+import { IMovie } from "../../types";
 
 interface IMovieTileProps extends HTMLAttributes<HTMLDivElement> {
-  movie: Movie;
+  movie: IMovie;
 }
 
 const MovieTile: FC<IMovieTileProps> = ({ movie, ...props }) => {
-  const { name, image, year, genre } = movie;
+  const { title, poster_path, release_date, genres } = movie;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditModal, setIsEditModal] = useState(false);
   const [isRemoveConfirmation, setIsRemoveConfirmation] = useState(false);
@@ -37,7 +37,7 @@ const MovieTile: FC<IMovieTileProps> = ({ movie, ...props }) => {
     setIsMenuOpen(false);
   };
 
-  const handleFormSubmit = (data: Movie) => {
+  const handleFormSubmit = (data: IMovie) => {
     console.log("Submitted data:", data);
   };
 
@@ -46,12 +46,14 @@ const MovieTile: FC<IMovieTileProps> = ({ movie, ...props }) => {
       <button onClick={toggleMenu} className={cl.menuButton}>
         ⋮
       </button>
-      <img src={image} alt={`${name} Poster`} className={cl.image} />
+      <img src={poster_path} alt={`${title} Poster`} className={cl.image} />
       <div className={cl.info}>
-        <h1 className={cl.title}>{name}</h1>
+        <h1 className={cl.title}>{title}</h1>
         <p className={cl.details}>
-          <span className={cl.year}>{new Date(year).getFullYear()}</span>
-          <span className={cl.genre}>{genre}</span>
+          <span className={cl.year}>
+            {new Date(release_date).getFullYear()}
+          </span>
+          <span className={cl.genre}>{genres.map((g) => `${g} `)}</span>
         </p>
       </div>
       {isMenuOpen && (

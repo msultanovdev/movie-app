@@ -1,10 +1,10 @@
 import { FC } from "react";
-import { Movie } from "../../types";
+import { IMovie } from "../../types";
 import styles from "./MovieDetails.module.css";
 import { formatTime } from "../../utils/helper";
 
 export interface IMovieDetailsProps {
-  movie: Movie;
+  movie: IMovie;
   onBackButtonClick: (id: null) => void;
 }
 
@@ -15,21 +15,21 @@ const MovieDetails: FC<IMovieDetailsProps> = ({ movie, onBackButtonClick }) => {
         Search
       </span>
       <img
-        src={movie.image}
-        alt={movie.name + " poster"}
+        src={movie.poster_path}
+        alt={movie.title + " poster"}
         className={styles.poster}
       />
       <div className={styles.details}>
         <div className={styles.header}>
-          <h1 className={styles.title}>{movie.name}</h1>
-          <div className={styles.rating}>{movie.rating}</div>
+          <h1 className={styles.title}>{movie.title}</h1>
+          <div className={styles.rating}>{movie.vote_average}</div>
         </div>
-        <p className={styles.genre}>{movie.genre}</p>
+        <p className={styles.genre}>{movie.genres.map((g) => `${g} `)}</p>
         <div className={styles.meta}>
-          <span className={styles.year}>{movie.year}</span>
-          <span className={styles.duration}>{formatTime(movie.duration)}</span>
+          <span className={styles.year}>{movie.release_date}</span>
+          <span className={styles.duration}>{formatTime(movie.runtime)}</span>
         </div>
-        <p className={styles.description}>{movie.description}</p>
+        <p className={styles.description}>{movie.overview}</p>
       </div>
     </div>
   );

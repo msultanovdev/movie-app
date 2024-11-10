@@ -2,19 +2,23 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import MovieForm from "./MovieForm";
 import { describe, it, expect, vi } from "vitest";
 import "@testing-library/jest-dom";
-import { Movie } from "../../types";
+import { IMovie } from "../../types";
 
 describe("MovieForm component", () => {
   const mockOnSubmit = vi.fn();
-  const initialMovieState: Movie = {
+  const initialMovieState: IMovie = {
     id: 123,
-    name: "Inception",
-    year: "2010-07-16",
-    image: "https://example.com/inception.jpg",
-    rating: 8.8,
-    genre: "Action",
-    duration: 148,
-    description: "A mind-bending thriller where reality is questioned.",
+    title: "Inception",
+    release_date: "2010-07-16",
+    poster_path: "https://example.com/inception.jpg",
+    vote_average: 8.8,
+    genres: ["Action"],
+    runtime: 148,
+    overview: "A mind-bending thriller where reality is questioned.",
+    tagline: "",
+    vote_count: 0,
+    budget: 0,
+    revenue: 0
   };
 
   it("renders form with initial values", () => {

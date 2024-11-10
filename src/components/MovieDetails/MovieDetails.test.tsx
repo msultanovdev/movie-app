@@ -2,19 +2,23 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import MovieDetails from "./MovieDetails";
 import { describe, it, expect, vi } from "vitest";
 import "@testing-library/jest-dom";
-import { Movie } from "../../types";
+import { IMovie } from "../../types";
 import { formatTime } from "../../utils/helper";
 
 describe("MovieDetails component", () => {
-  const movie: Movie = {
+  const movie: IMovie = {
     id: 1,
-    name: "Inception",
-    image: "/path/to/image.jpg",
-    rating: 8.8,
-    genre: "Thriller",
-    year: "2010",
-    duration: 148,
-    description: "A mind-bending thriller where reality is questioned.",
+    title: "Inception",
+    poster_path: "/path/to/image.jpg",
+    vote_average: 8.8,
+    genres: ["Thriller"],
+    release_date: "2010",
+    runtime: 148,
+    overview: "A mind-bending thriller where reality is questioned.",
+    tagline: "",
+    vote_count: 0,
+    budget: 0,
+    revenue: 0,
   };
   const onBackButtonClick = vi.fn();
 
@@ -30,7 +34,7 @@ describe("MovieDetails component", () => {
     );
     expect(screen.getByText("8.8")).toBeInTheDocument();
     expect(screen.getByText("2010")).toBeInTheDocument();
-    expect(screen.getByText(formatTime(movie.duration))).toBeInTheDocument();
+    expect(screen.getByText(formatTime(movie.runtime))).toBeInTheDocument();
     expect(
       screen.getByText("A mind-bending thriller where reality is questioned.")
     ).toBeInTheDocument();

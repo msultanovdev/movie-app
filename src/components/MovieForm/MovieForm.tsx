@@ -1,28 +1,32 @@
 import { FC, useState } from "react";
 import "./MovieForm.css";
-import { Movie } from "../../types";
+import { IMovie } from "../../types";
 import FlexRow from "../../layouts/FlexRow/FlexRow";
 import { formatDate } from "../../utils/helper";
 
 export interface IMovieFormProps {
-  initiaMovieState?: Movie;
-  onSubmit: (data: Movie) => void;
+  initiaMovieState?: IMovie;
+  onSubmit: (data: IMovie) => void;
 }
 
-const epmtyMovieState: Movie = {
+const epmtyMovieState: IMovie = {
   id: Date.now() + Math.floor(Math.random() * 1000),
-  name: "",
-  year: formatDate(new Date()),
-  image: "",
-  rating: 0,
-  genre: "",
-  duration: 0,
-  description: "",
+  title: "",
+  release_date: formatDate(new Date()),
+  poster_path: "",
+  vote_average: 0,
+  genres: [],
+  runtime: 0,
+  overview: "",
+  tagline: "",
+  vote_count: 0,
+  budget: 0,
+  revenue: 0,
 };
 
 const MovieForm: FC<IMovieFormProps> = (props) => {
   const { initiaMovieState, onSubmit } = props;
-  const [formData, setFormData] = useState<Movie>(
+  const [formData, setFormData] = useState<IMovie>(
     initiaMovieState ?? epmtyMovieState
   );
   const handleChange = (
@@ -43,8 +47,8 @@ const MovieForm: FC<IMovieFormProps> = (props) => {
           <label>Title</label>
           <input
             type="text"
-            name="name"
-            value={formData.name}
+            name="title"
+            value={formData.title}
             onChange={handleChange}
             placeholder="Moana"
           />
@@ -54,8 +58,8 @@ const MovieForm: FC<IMovieFormProps> = (props) => {
           <label>Release Date</label>
           <input
             type="date"
-            name="year"
-            value={formatDate(new Date(formData.year))}
+            name="release_date"
+            value={formatDate(new Date(formData.release_date))}
             onChange={handleChange}
           />
         </div>
@@ -66,8 +70,8 @@ const MovieForm: FC<IMovieFormProps> = (props) => {
           <label>Movie URL</label>
           <input
             type="url"
-            name="image"
-            value={formData.image}
+            name="poster_path"
+            value={formData.poster_path}
             onChange={handleChange}
             placeholder="https://"
           />
@@ -77,9 +81,9 @@ const MovieForm: FC<IMovieFormProps> = (props) => {
           <label>Rating</label>
           <input
             type="number"
-            name="rating"
+            name="vote_average"
             step="0.1"
-            value={formData.rating}
+            value={formData.vote_average}
             onChange={handleChange}
             placeholder="7.8"
           />
@@ -89,7 +93,11 @@ const MovieForm: FC<IMovieFormProps> = (props) => {
       <FlexRow>
         <div className="form-group form-full-input">
           <label>Genre</label>
-          <select name="genre" value={formData.genre} onChange={handleChange}>
+          <select
+            name="genre"
+            value={formData.genres[0]}
+            onChange={handleChange}
+          >
             <option value="">Select Genre</option>
             <option value="Action">Action</option>
             <option value="Adventure">Adventure</option>
@@ -102,7 +110,7 @@ const MovieForm: FC<IMovieFormProps> = (props) => {
           <input
             type="number"
             name="duration"
-            value={formData.duration}
+            value={formData.runtime}
             onChange={handleChange}
             placeholder="minutes"
           />
@@ -113,7 +121,7 @@ const MovieForm: FC<IMovieFormProps> = (props) => {
         <label>Overview</label>
         <textarea
           name="description"
-          value={formData.description}
+          value={formData.overview}
           onChange={handleChange}
           placeholder="Movie description"
         />

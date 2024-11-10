@@ -6,11 +6,12 @@ export interface ISortProps {
   onChange: (value: string) => void;
 }
 
-const Sort: FC<ISortProps> = ({options, onChange}) => {
+const Sort: FC<ISortProps> = ({ options, onChange }) => {
   return (
     <div className={styles.selectContainer}>
       <span className={styles.label}>Sort by</span>
       <select
+        defaultValue={options[0].value}
         className={styles.select}
         onChange={(e) => onChange(e.target.value)}
       >

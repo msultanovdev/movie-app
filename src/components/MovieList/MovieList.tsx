@@ -12,7 +12,7 @@ const MovieList: FC<IMovieListProps> = ({ movies, onClick }) => {
   return (
     <div className={cl.movieList}>
       {movies.map((movie) => {
-        return <MovieTile onClick={() => onClick(movie.id)} movie={movie} />;
+        return <MovieTile key={movie.id} onClick={() => onClick(movie.id)} movie={movie} />;
       })}
     </div>
   );

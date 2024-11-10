@@ -8,6 +8,7 @@ import { movies } from "./db";
 import Sort from "./components/Sort/Sort";
 import MovieDetails from "./components/MovieDetails/MovieDetails";
 import { Movie } from "./types";
+import { GlobalScrollbar } from "mac-scrollbar";
 
 const options = [
   { value: "release-date", label: "Release Date" },
@@ -21,7 +22,9 @@ function App() {
   const [sortedMovies, setSortedMovies] = useState(movies);
 
   useEffect(() => {
-    const selectedMovie = movies.filter(movie => movie.id === selectedMovieId);
+    const selectedMovie = movies.filter(
+      (movie) => movie.id === selectedMovieId
+    );
     setSelectedMovie(selectedMovie[0]);
   }, [selectedMovieId]);
 
@@ -47,8 +50,12 @@ function App() {
 
   return (
     <main className="main">
+      <GlobalScrollbar skin="dark" />
       {selectedMovie ? (
-        <MovieDetails onBackButtonClick={() => setSelectedMovieId(null)} movie={selectedMovie} />
+        <MovieDetails
+          onBackButtonClick={() => setSelectedMovieId(null)}
+          movie={selectedMovie}
+        />
       ) : (
         <Search onSearch={handleSearch} style={{ margin: "10px 0" }} />
       )}

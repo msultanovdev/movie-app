@@ -1,8 +1,8 @@
-import React, { FC, HTMLAttributes, useContext, useState } from "react";
+import React, { FC, HTMLAttributes, useState } from "react";
 import cl from "./MovieTile.module.css";
 import { Movie } from "../../types";
 import PopupMenu from "../UI/Popup/Popup";
-import { AppContext, AppContextType } from "../../AppContext";
+import Dialog from "../Dialog/Dialog";
 
 interface IMovieTileProps extends HTMLAttributes<HTMLDivElement> {
   movie: Movie;
@@ -11,7 +11,7 @@ interface IMovieTileProps extends HTMLAttributes<HTMLDivElement> {
 const MovieTile: FC<IMovieTileProps> = ({ movie, ...props }) => {
   const { name, image, year, genres } = movie;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { overlays, setOverlays } = useContext(AppContext) as AppContextType;
+  const [isEditModal, setIsEditModal] = useState(false);
 
   const toggleMenu = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -21,12 +21,7 @@ const MovieTile: FC<IMovieTileProps> = ({ movie, ...props }) => {
   const handleEdit = (e: React.MouseEvent) => {
     e.stopPropagation();
     console.log("Edit movie:", name);
-    setOverlays({
-      ...overlays,
-      modal: {
-        title: "Edit",
-      },
-    });
+    setIsEditModal(true);
   };
 
   const handleDelete = (e: React.MouseEvent) => {
@@ -60,6 +55,11 @@ const MovieTile: FC<IMovieTileProps> = ({ movie, ...props }) => {
           onDelete={handleDelete}
           onClose={handleClose}
         />
+      )}
+      {isEditModal && (
+        <Dialog title="EDIT" onClose={() => setIsEditModal(false)}>
+          <p>This is the content of the dialog.</p>
+        </Dialog>
       )}
     </div>
   );

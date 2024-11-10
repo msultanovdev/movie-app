@@ -1,0 +1,49 @@
+.dialog-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.dialog {
+  position: relative;
+  background-color: #232323;
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  h2 {
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 400;
+  }
+}
+
+.close-button {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 30px;
+  transition: 0.3s;
+  &:hover {
+    cursor: pointer;
+    color: red;
+  }
+}
+
+.dialog-body {
+  margin-top: 20px;
+}

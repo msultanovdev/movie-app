@@ -7,9 +7,7 @@ import MovieList from "./components/MovieList/MovieList";
 import { movies } from "./db";
 import Sort from "./components/Sort/Sort";
 import MovieDetails from "./components/MovieDetails/MovieDetails";
-import { Movie, OverlaysType } from "./types";
-import Overlays from "./layouts/Overlays/Overlays";
-import { AppContext } from "./AppContext";
+import { Movie } from "./types";
 import { GlobalScrollbar } from "mac-scrollbar";
 
 const options = [
@@ -22,7 +20,6 @@ function App() {
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [selectedGenre, setSelectedGenre] = useState("All");
   const [sortedMovies, setSortedMovies] = useState(movies);
-  const [overlays, setOverlays] = useState<OverlaysType>({});
 
   useEffect(() => {
     const selectedMovie = movies.filter(
@@ -52,36 +49,31 @@ function App() {
   };
 
   return (
-    <AppContext.Provider
-      value={{ overlays: overlays, setOverlays: setOverlays }}
-    >
+    <main className="main">
       <GlobalScrollbar skin="dark" />
-      <main className="main">
-        <Overlays />
-        {selectedMovie ? (
-          <MovieDetails
-            onBackButtonClick={() => setSelectedMovieId(null)}
-            movie={selectedMovie}
-          />
-        ) : (
-          <Search onSearch={handleSearch} style={{ margin: "10px 0" }} />
-        )}
+      {selectedMovie ? (
+        <MovieDetails
+          onBackButtonClick={() => setSelectedMovieId(null)}
+          movie={selectedMovie}
+        />
+      ) : (
+        <Search onSearch={handleSearch} style={{ margin: "10px 0" }} />
+      )}
 
-        <div className="movies-sort">
-          <GenreSelect
-            onSelect={handleSelectGenre}
-            genres={["All", "Documentary", "Comedy", "Horror", "Crime"]}
-            selectedGenre={selectedGenre}
-          />
-          <Sort options={options} onChange={handleSortChange} />
-        </div>
-        {movies.length && (
-          <p className="movies-count">{movies.length} movies found</p>
-        )}
-        <MovieList onClick={setSelectedMovieId} movies={sortedMovies} />
-        <Counter initValue={0} />
-      </main>
-    </AppContext.Provider>
+      <div className="movies-sort">
+        <GenreSelect
+          onSelect={handleSelectGenre}
+          genres={["All", "Documentary", "Comedy", "Horror", "Crime"]}
+          selectedGenre={selectedGenre}
+        />
+        <Sort options={options} onChange={handleSortChange} />
+      </div>
+      {movies.length && (
+        <p className="movies-count">{movies.length} movies found</p>
+      )}
+      <MovieList onClick={setSelectedMovieId} movies={sortedMovies} />
+      <Counter initValue={0} />
+    </main>
   );
 }
 

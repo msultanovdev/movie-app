@@ -1,5 +1,6 @@
 import { FC, useContext, useEffect, useRef } from "react";
 import { AppContext, AppContextType } from "../../AppContext";
+import FocusTrap from "focus-trap-react";
 
 interface IModalProps {
   title: string;
@@ -42,14 +43,16 @@ const Modal: FC<IModalProps> = () => {
   };
 
   return (
-    <div className="modal">
-      <div className="modal-content" ref={modalRef}>
-        <h2>{title}</h2>
-        <button className="close-btn" onClick={closeModal}>
-          x
-        </button>
+    <FocusTrap>
+      <div className="modal">
+        <div className="modal-content" ref={modalRef}>
+          <h2>{title}</h2>
+          <button className="close-btn" onClick={closeModal}>
+            x
+          </button>
+        </div>
       </div>
-    </div>
+    </FocusTrap>
   );
 };
 

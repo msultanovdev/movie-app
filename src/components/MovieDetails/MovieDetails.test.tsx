@@ -3,6 +3,7 @@ import MovieDetails from "./MovieDetails";
 import { describe, it, expect, vi } from "vitest";
 import "@testing-library/jest-dom";
 import { Movie } from "../../types";
+import { formatTime } from "../../utils/helper";
 
 describe("MovieDetails component", () => {
   const movie: Movie = {
@@ -10,9 +11,9 @@ describe("MovieDetails component", () => {
     name: "Inception",
     image: "/path/to/image.jpg",
     rating: 8.8,
-    genres: ["Action", "Sci-Fi", "Thriller"],
+    genre: "Thriller",
     year: "2010",
-    duration: "148 min",
+    duration: 148,
     description: "A mind-bending thriller where reality is questioned.",
   };
   const onBackButtonClick = vi.fn();
@@ -29,7 +30,7 @@ describe("MovieDetails component", () => {
     );
     expect(screen.getByText("8.8")).toBeInTheDocument();
     expect(screen.getByText("2010")).toBeInTheDocument();
-    expect(screen.getByText("148 min")).toBeInTheDocument();
+    expect(screen.getByText(formatTime(movie.duration))).toBeInTheDocument();
     expect(
       screen.getByText("A mind-bending thriller where reality is questioned.")
     ).toBeInTheDocument();

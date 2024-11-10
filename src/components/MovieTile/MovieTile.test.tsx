@@ -10,9 +10,9 @@ describe("MovieTile component", () => {
     name: "Inception",
     image: "/path/to/image.jpg",
     rating: 8.8,
-    genres: ["Action", "Sci-Fi", "Thriller"],
+    genre: "Thriller",
     year: "2010",
-    duration: "148 min",
+    duration: 148,
     description: "A mind-bending thriller where reality is questioned.",
   };
 
@@ -21,7 +21,7 @@ describe("MovieTile component", () => {
 
     expect(screen.getByText("Inception")).toBeInTheDocument();
     expect(screen.getAllByText("2010")[0]).toBeInTheDocument();
-    expect(screen.getByText("Action Sci-Fi Thriller")).toBeInTheDocument();
+    expect(screen.getByText("Thriller")).toBeInTheDocument();
   });
 
   it("renders movie poster image with correct src and alt text", () => {

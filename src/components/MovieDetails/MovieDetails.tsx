@@ -11,6 +11,7 @@ export interface IMovieDetailsProps {
 const MovieDetails: FC<IMovieDetailsProps> = ({ movie, onBackButtonClick }) => {
   return (
     <div className={styles.container}>
+      <div className={styles.wrapper}>
       <span onClick={() => onBackButtonClick(null)} className={styles.back}>
         Search
       </span>
@@ -31,6 +32,7 @@ const MovieDetails: FC<IMovieDetailsProps> = ({ movie, onBackButtonClick }) => {
         </div>
         <p className={styles.description}>{movie.overview}</p>
       </div>
+    </div>
     </div>
   );
 };

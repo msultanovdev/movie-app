@@ -1,43 +1,45 @@
+import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
-import MovieTile from "./MovieTile";
-import { describe, it, expect, vi } from "vitest";
 import "@testing-library/jest-dom";
-import { Movie } from "../../types";
+import MovieTile from "./MovieTile";
+import { IMovie } from "../../types";
 
-describe("MovieTile component", () => {
-  const movie: Movie = {
+describe("<MovieTile />", () => {
+  const mockMovie: IMovie = {
     id: 1,
-    name: "Inception",
-    image: "/path/to/image.jpg",
-    rating: 8.8,
-    genre: "Thriller",
-    year: "2010",
-    duration: 148,
-    description: "A mind-bending thriller where reality is questioned.",
+    title: "Inception",
+    poster_path: "https://inception.com/poster.jpg",
+    release_date: "2010-07-16",
+    genres: ["Action", "Sci-Fi"],
+    runtime: 148,
+    overview: "A thief who steals corporate secrets...",
+    tagline: "",
+    vote_average: 0,
+    vote_count: 0,
+    budget: 0,
+    revenue: 0,
   };
 
-  it("renders movie name, year, and genres correctly", () => {
-    render(<MovieTile movie={movie} />);
-
-    expect(screen.getByText("Inception")).toBeInTheDocument();
-    expect(screen.getAllByText("2010")[0]).toBeInTheDocument();
-    expect(screen.getByText("Thriller")).toBeInTheDocument();
+  it("renders movie information correctly", () => {
+    render(<MovieTile movie={mockMovie} />);
+    expect(screen.getByText(mockMovie.title)).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        new Date(mockMovie.release_date).getFullYear().toString()
+      )
+    ).toBeInTheDocument();
+    const genresText = mockMovie.genres.join(" ");
+    expect(screen.getByText(genresText)).toBeInTheDocument();
+    const image = screen.getByAltText(`${mockMovie.title} Poster`);
+    expect(image).toBeInTheDocument();
+    expect(image).toHaveAttribute("src", mockMovie.poster_path);
   });
 
-  it("renders movie poster image with correct src and alt text", () => {
-    render(<MovieTile movie={movie} />);
-
-    const posterImage = screen.getByAltText("Inception Poster");
-    expect(posterImage).toHaveAttribute("src", "/path/to/image.jpg");
-  });
-
-  it("applies additional props to the root element", () => {
-    const handleClick = vi.fn();
-    render(<MovieTile movie={movie} onClick={handleClick} data-testid="movie-tile" />);
-
-    const movieTile = screen.getByTestId("movie-tile");
-    movieTile.click();
-
-    expect(handleClick).toHaveBeenCalled();
+  it("applies proper class names for styling", () => {
+    render(<MovieTile movie={mockMovie} />);
+    const mainDiv = screen.getByRole("img", {
+      name: `${mockMovie.title} Poster`,
+    }).parentElement;
+    expect(mainDiv).toHaveClass("poster");
   });
 });

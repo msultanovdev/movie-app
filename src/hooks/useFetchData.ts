@@ -1,5 +1,6 @@
 import axios, { CancelTokenSource } from "axios";
-import { useEffect, useState, useCallback, useMemo } from "react";
+import { useEffect, useState, useCallback } from "react";
+import { useDeepCompareMemoize } from 'use-deep-compare-effect';
 
 type FetchParams = {
   [key: string]: string;
@@ -15,7 +16,7 @@ export const useFetchData = <T>({ url, params }: FetchType) => {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const memoizedParams = useMemo(() => params, [JSON.stringify(params)]);
+  const memoizedParams = useDeepCompareMemoize(params);
   const fetchData = useCallback(
     async (cancelToken?: CancelTokenSource) => {
       setIsLoading(true);
@@ -37,6 +38,7 @@ export const useFetchData = <T>({ url, params }: FetchType) => {
         setIsLoading(false);
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [url, memoizedParams]
   );
 

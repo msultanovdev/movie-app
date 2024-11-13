@@ -1,13 +1,19 @@
 import { FC, KeyboardEvent } from "react";
 import cl from "./GenreSelect.module.css";
-import { IGenreSelectProps } from "../../types";
+import { Genre } from "../../types";
+
+export interface IGenreSelectProps {
+  genres: Genre[];
+  selectedGenre: Genre;
+  onSelect: (genre: Genre) => void;
+}
 
 const GenreSelect: FC<IGenreSelectProps> = ({
   genres,
   onSelect,
   selectedGenre,
 }) => {
-  const handleKeyDown = (e: KeyboardEvent<HTMLLIElement>, genre: string) => {
+  const handleKeyDown = (e: KeyboardEvent<HTMLLIElement>, genre: Genre) => {
     if (e.key === "Enter") {
       onSelect(genre);
     }
@@ -20,11 +26,11 @@ const GenreSelect: FC<IGenreSelectProps> = ({
             <li
               onClick={() => onSelect(genre)}
               onKeyDown={(e) => handleKeyDown(e, genre)}
-              className={selectedGenre === genre ? cl.active : ""}
+              className={selectedGenre.title === genre.title ? cl.active : ""}
               key={index}
               tabIndex={0}
             >
-              {genre}
+              {genre.title}
             </li>
           );
         })}

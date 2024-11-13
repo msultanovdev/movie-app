@@ -8,12 +8,6 @@ export interface ICounterProps {
   initValue: number;
 }
 
-export interface IGenreSelectProps {
-  genres: string[];
-  selectedGenre: string;
-  onSelect: (genre: string) => void;
-}
-
 export interface ISearchProps {
   query: string;
   setQuery: (e: string) => void;
@@ -65,3 +59,8 @@ export interface IMovieApi {
   offset: number;
   totalAmount: number;
 }
+
+export type Genre = {
+  title: string;
+  value: string;
+};

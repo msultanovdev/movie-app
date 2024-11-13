@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { IMovie, IMovieApi } from "../../types";
+import { Genre, IMovie, IMovieApi } from "../../types";
 import MovieTile from "../MovieTile/MovieTile";
 import cl from "./MovieList.module.css";
 import { useFetchData } from "../../hooks/useFetchData";
@@ -18,10 +18,13 @@ const options = [
 const MovieList: FC<IMovieListProps> = () => {
   const [query, setQuery] = useState("");
   const [search, setSearch] = useState("");
-  const [selectedGenre, setSelectedGenre] = useState("All");
+  const [selectedGenre, setSelectedGenre] = useState({
+    title: "All",
+    value: "",
+  });
   const [selectedMovie, setSelectedMovie] = useState<IMovie | null>(null);
   const { data, isLoading, error } = useFetchData<IMovieApi>(
-    `http://localhost:4000/movies?search=${search}&filter=${[selectedGenre === "All" ? "" : selectedGenre]}&searchBy=title`
+    `http://localhost:4000/movies?search=${search}&filter=${[selectedGenre.value]}&searchBy=title`
   );
   const movies = data?.data;
 
@@ -45,7 +48,7 @@ const MovieList: FC<IMovieListProps> = () => {
     setSortedMovies(sorted);
   };
 
-  const handleSelectGenre = (genre: string) => {
+  const handleSelectGenre = (genre: Genre) => {
     setSelectedGenre(genre);
   };
 
@@ -73,7 +76,13 @@ const MovieList: FC<IMovieListProps> = () => {
       <div className="movies-sort">
         <GenreSelect
           onSelect={handleSelectGenre}
-          genres={["All", "Documentary", "Comedy", "Horror", "Crime"]}
+          genres={[
+            { title: "All", value: "" },
+            { title: "Documentary", value: "documentary" },
+            { title: "Comedy", value: "comedy" },
+            { title: "Horror", value: "horror" },
+            { title: "Crime", value: "crime" },
+          ]}
           selectedGenre={selectedGenre}
         />
         <Sort options={options} onChange={handleSortChange} />

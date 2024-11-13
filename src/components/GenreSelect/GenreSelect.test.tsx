@@ -1,28 +1,37 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import GenreSelect from "./GenreSelect";
-import { describe, it, expect, vi } from "vitest";
-import "@testing-library/jest-dom";
+import { describe, it, expect, vi } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import userEvent from '@testing-library/user-event';
+import GenreSelect from './GenreSelect';
+import { Genre } from '../../types';
 
-describe("GenreSelect component", () => {
-  const genres = ["Rock", "Pop", "Jazz"];
+describe('<GenreSelect />', () => {
+  const genres: Genre[] = [
+    { value: '1', title: 'Action' },
+    { value: '2', title: 'Comedy' },
+    { value: '3', title: 'Thriller' }
+  ];
+  const selectedGenre = { value: '1', title: 'Action' };
   const onSelect = vi.fn();
-
-  it("renders all genres passed in props", () => {
-    render(<GenreSelect genres={genres} onSelect={onSelect} selectedGenre="" />);
-    genres.forEach((genre) => {
-      expect(screen.getByText(genre)).toBeInTheDocument();
-    });
+  it('renders all genres with the selected genre highlighted', () => {
+    render(<GenreSelect genres={genres} onSelect={onSelect} selectedGenre={selectedGenre} />);
+    expect(screen.getByText('Action')).toBeInTheDocument();
+    expect(screen.getByText('Comedy')).toBeInTheDocument();
+    expect(screen.getByText('Thriller')).toBeInTheDocument();
+    expect(screen.getByText('Action').className).toContain('active');
   });
-  it("highlights the selected genre passed in props", () => {
-    render(<GenreSelect genres={genres} onSelect={onSelect} selectedGenre="Rock" />);
-    const selectedGenre = screen.getByText("Rock");
-    expect(selectedGenre).toHaveClass("active");
+  it('calls onSelect when a genre is clicked', async () => {
+    const user = userEvent.setup();
+    render(<GenreSelect genres={genres} onSelect={onSelect} selectedGenre={selectedGenre} />);
+    await user.click(screen.getByText('Comedy'));
+    expect(onSelect).toHaveBeenCalledWith(genres[1]);
   });
-
-  it("calls 'onSelect' with correct genre when genre is clicked", () => {
-    render(<GenreSelect genres={genres} onSelect={onSelect} selectedGenre="" />);
-    const genreItem = screen.getByText("Jazz");
-    fireEvent.click(genreItem);
-    expect(onSelect).toHaveBeenCalledWith("Jazz");
+  it('calls onSelect when Enter is pressed on a genre', async () => {
+    const user = userEvent.setup();
+    render(<GenreSelect genres={genres} onSelect={onSelect} selectedGenre={selectedGenre} />);
+    const comedyGenre = screen.getByText('Comedy');
+    await comedyGenre.focus();
+    await user.keyboard('{Enter}');
+    expect(onSelect).toHaveBeenCalledWith(genres[1]);
   });
 });

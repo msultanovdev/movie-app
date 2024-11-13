@@ -1,20 +1,13 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC } from "react";
 import cl from "./Search.module.css";
 import Button from "../UI/Button/Button";
 import { ISearchProps } from "../../types";
 
-const Search: FC<ISearchProps> = ({ initSearchQuery, onSearch, ...props }) => {
-  const [query, setQuery] = useState(initSearchQuery ?? "");
+const Search: FC<ISearchProps> = ({ query, setQuery, onSearch, ...props }) => {
   const handleSearch = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     onSearch();
   };
-
-  useEffect(() => {
-    if (initSearchQuery) {
-      setQuery(initSearchQuery);
-    }
-  }, [initSearchQuery]);
 
   return (
     <form className={cl.searchForm} {...props}>

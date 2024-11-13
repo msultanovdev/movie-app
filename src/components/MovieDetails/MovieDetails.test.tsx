@@ -1,55 +1,68 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import MovieDetails from "./MovieDetails";
 import { describe, it, expect, vi } from "vitest";
+import { render, fireEvent, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { Movie } from "../../types";
-import { formatTime } from "../../utils/helper";
+import MovieDetails from "./MovieDetails";
+import { IMovie } from "../../types";
 
-describe("MovieDetails component", () => {
-  const movie: Movie = {
-    id: 1,
-    name: "Inception",
-    image: "/path/to/image.jpg",
-    rating: 8.8,
-    genre: "Thriller",
-    year: "2010",
-    duration: 148,
-    description: "A mind-bending thriller where reality is questioned.",
+describe("<MovieDetails />", () => {
+  const mockMovie: IMovie = {
+    title: "Inception",
+    poster_path: "/path/to/poster.jpg",
+    vote_average: 8.8,
+    genres: ["Action", "Drama"],
+    release_date: "2010-07-16",
+    runtime: 148,
+    overview:
+      "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a CEO.",
+    id: 0,
+    tagline: "",
+    vote_count: 0,
+    budget: 0,
+    revenue: 0,
   };
-  const onBackButtonClick = vi.fn();
 
-  it("renders movie details correctly", () => {
+  const mockOnBackButtonClick = vi.fn();
+
+  it("renders correctly", () => {
     render(
-      <MovieDetails movie={movie} onBackButtonClick={onBackButtonClick} />
+      <MovieDetails
+        movie={mockMovie}
+        onBackButtonClick={mockOnBackButtonClick}
+      />
     );
-
     expect(screen.getByText("Inception")).toBeInTheDocument();
-    expect(screen.getByAltText("Inception poster")).toHaveAttribute(
-      "src",
-      "/path/to/image.jpg"
+    expect(screen.getByText("Action Drama")).toBeInTheDocument();
+    expect(screen.getByText(/corporate secrets/)).toBeInTheDocument();
+  });
+
+  it("handles the back button click", () => {
+    render(
+      <MovieDetails
+        movie={mockMovie}
+        onBackButtonClick={mockOnBackButtonClick}
+      />
+    );
+    fireEvent.click(screen.getByText("Search"));
+    expect(mockOnBackButtonClick).toHaveBeenCalledWith(null);
+  });
+
+  it("displays formatted time for movie runtime", () => {
+    render(
+      <MovieDetails
+        movie={mockMovie}
+        onBackButtonClick={mockOnBackButtonClick}
+      />
+    );
+    expect(screen.getByText("2h 28 min")).toBeInTheDocument();
+  });
+
+  it("displays the rating", () => {
+    render(
+      <MovieDetails
+        movie={mockMovie}
+        onBackButtonClick={mockOnBackButtonClick}
+      />
     );
     expect(screen.getByText("8.8")).toBeInTheDocument();
-    expect(screen.getByText("2010")).toBeInTheDocument();
-    expect(screen.getByText(formatTime(movie.duration))).toBeInTheDocument();
-    expect(
-      screen.getByText("A mind-bending thriller where reality is questioned.")
-    ).toBeInTheDocument();
-  });
-
-  it("calls 'onBackButtonClick' with null when back button is clicked", () => {
-    render(
-      <MovieDetails movie={movie} onBackButtonClick={onBackButtonClick} />
-    );
-    const backButton = screen.getByText("Search");
-    fireEvent.click(backButton);
-    expect(onBackButtonClick).toHaveBeenCalledWith(null);
-  });
-
-  it("displays movie poster with correct src and alt text", () => {
-    render(
-      <MovieDetails movie={movie} onBackButtonClick={onBackButtonClick} />
-    );
-    const poster = screen.getByAltText("Inception poster");
-    expect(poster).toHaveAttribute("src", "/path/to/image.jpg");
   });
 });

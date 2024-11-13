@@ -1,7 +1,25 @@
+.movieListWrapper {
+  width: 100%;
+}
+
 .movieList {
-    margin-top: 20px;
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    flex-wrap: wrap;
+  color: white;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  width: 100%;
+  align-items: start;
+}
+
+.moviesListHeader {
+  margin: 0 auto 10px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+
+  background: url("../../assets/Header.png") no-repeat;
+  background-position: center;
+  background-size: cover;
 }

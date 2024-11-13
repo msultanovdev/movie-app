@@ -40,16 +40,16 @@ export type OverlaysType = {
 
 export interface IMovie {
   id: number;
-  title: string;
+  title: string | "";
   tagline: string;
-  vote_average: number;
-  vote_count: number;
+  vote_average: number | "";
+  vote_count: number | "";
   release_date: string;
   poster_path: string;
   overview: string;
-  budget: number;
-  revenue: number;
-  runtime: number;
+  budget: number | "";
+  revenue: number | "";
+  runtime: number | "";
   genres: string[];
 }
 

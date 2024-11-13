@@ -14,14 +14,14 @@ const epmtyMovieState: IMovie = {
   title: "",
   release_date: formatDate(new Date()),
   poster_path: "",
-  vote_average: 0,
+  vote_average: "",
   genres: [],
-  runtime: 0,
+  runtime: "",
   overview: "",
   tagline: "",
-  vote_count: 0,
-  budget: 0,
-  revenue: 0,
+  vote_count: "",
+  budget: "",
+  revenue: "",
 };
 
 const MovieForm: FC<IMovieFormProps> = (props) => {
@@ -109,7 +109,7 @@ const MovieForm: FC<IMovieFormProps> = (props) => {
           <label>Runtime</label>
           <input
             type="number"
-            name="duration"
+            name="runtime"
             value={formData.runtime}
             onChange={handleChange}
             placeholder="minutes"
@@ -120,7 +120,7 @@ const MovieForm: FC<IMovieFormProps> = (props) => {
       <div className="form-group overview">
         <label>Overview</label>
         <textarea
-          name="description"
+          name="overview"
           value={formData.overview}
           onChange={handleChange}
           placeholder="Movie description"

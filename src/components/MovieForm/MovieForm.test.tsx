@@ -1,76 +1,49 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import MovieForm from "./MovieForm";
-import { describe, it, expect, vi } from "vitest";
-import "@testing-library/jest-dom";
-import { IMovie } from "../../types";
+import { describe, it, expect, vi } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import userEvent from '@testing-library/user-event';
+import MovieForm from './MovieForm';
 
-describe("MovieForm component", () => {
-  const mockOnSubmit = vi.fn();
-  const initialMovieState: IMovie = {
-    id: 123,
-    title: "Inception",
-    release_date: "2010-07-16",
-    poster_path: "https://example.com/inception.jpg",
-    vote_average: 8.8,
-    genres: ["Action"],
-    runtime: 148,
-    overview: "A mind-bending thriller where reality is questioned.",
-    tagline: "",
-    vote_count: 0,
-    budget: 0,
-    revenue: 0
-  };
-
-  it("renders form with initial values", () => {
-    render(
-      <MovieForm onSubmit={mockOnSubmit} initiaMovieState={initialMovieState} />
-    );
-    expect(screen.getByDisplayValue("Inception")).toBeInTheDocument();
-    expect(screen.getByDisplayValue("2010-07-16")).toBeInTheDocument();
-    expect(
-      screen.getByDisplayValue("https://example.com/inception.jpg")
-    ).toBeInTheDocument();
-    expect(screen.getByDisplayValue("8.8")).toBeInTheDocument();
-    expect(screen.getByDisplayValue("Action")).toBeInTheDocument();
-    expect(screen.getByDisplayValue("148")).toBeInTheDocument();
-    expect(
-      screen.getByDisplayValue(
-        "A mind-bending thriller where reality is questioned."
-      )
-    ).toBeInTheDocument();
+describe('<MovieForm />', () => {
+  const mockSubmit = vi.fn();
+  it('renders the form with initial empty state correctly', () => {
+    render(<MovieForm onSubmit={mockSubmit} />);
+    expect(screen.getByPlaceholderText('Moana')).toHaveValue('');
+    expect(screen.getByPlaceholderText('https://')).toHaveValue('');
+    expect(screen.getByPlaceholderText('7.8')).toHaveValue(null);
+    expect(screen.getByPlaceholderText('minutes')).toHaveValue(null);
+    expect(screen.getByPlaceholderText('Movie description')).toHaveValue('');
   });
-
-  it("handles input change correctly", () => {
-    render(
-      <MovieForm onSubmit={mockOnSubmit} initiaMovieState={initialMovieState} />
-    );
-    const titleInput = screen.getByPlaceholderText("Moana");
-    fireEvent.change(titleInput, { target: { value: "The Dark Knight" } });
-    expect(screen.getByDisplayValue("The Dark Knight")).toBeInTheDocument();
+  it('updates form fields when user types', async () => {
+    render(<MovieForm onSubmit={mockSubmit} />);
+    const user = userEvent.setup();
+    await user.type(screen.getByPlaceholderText('Moana'), 'Inception');
+    await user.type(screen.getByPlaceholderText('https://'), 'https://inception.com/poster.jpg');
+    await user.type(screen.getByPlaceholderText('7.8'), '8.8');
+    await user.type(screen.getByPlaceholderText('minutes'), '148');
+    await user.type(screen.getByPlaceholderText('Movie description'), 'A dream within a dream.');
+    expect(screen.getByPlaceholderText('Moana')).toHaveValue('Inception');
+    expect(screen.getByPlaceholderText('https://')).toHaveValue('https://inception.com/poster.jpg');
+    expect(screen.getByPlaceholderText('7.8')).toHaveValue(8.8);
+    expect(screen.getByPlaceholderText('minutes')).toHaveValue(148);
+    expect(screen.getByPlaceholderText('Movie description')).toHaveValue('A dream within a dream.');
   });
-
-  it("calls onSubmit with the correct data when Submit is clicked", () => {
-    render(
-      <MovieForm onSubmit={mockOnSubmit} initiaMovieState={initialMovieState} />
-    );
-    const submitButton = screen.getByRole("button", { name: /submit/i });
-    fireEvent.click(submitButton);
-    expect(mockOnSubmit).toHaveBeenCalledWith(initialMovieState);
+  it('submits the form data', async () => {
+    const user = userEvent.setup();
+    render(<MovieForm onSubmit={mockSubmit} />);
+    await user.type(screen.getByPlaceholderText('Moana'), 'Inception');
+    await user.type(screen.getByPlaceholderText('https://'), 'https://inception.com/poster.jpg');
+    await user.type(screen.getByPlaceholderText('7.8'), '8.8');
+    await user.type(screen.getByPlaceholderText('minutes'), '148');
+    await user.type(screen.getByPlaceholderText('Movie description'), 'Thrilling mind-bending journey');
+    await user.click(screen.getByText('Submit'));
+    expect(mockSubmit).toHaveBeenCalled();
   });
-
-  it("resets the form when Reset button is clicked", () => {
-    render(
-      <MovieForm onSubmit={mockOnSubmit} initiaMovieState={initialMovieState} />
-    );
-    const resetButton = screen.getByRole("button", { name: /reset/i });
-    fireEvent.click(resetButton);
-    expect(screen.getAllByDisplayValue("")[0]).toBeInTheDocument();
-    expect(screen.getAllByDisplayValue("0")[0]).toBeInTheDocument();
-  });
-
-  it("handles empty initial state correctly", () => {
-    render(<MovieForm onSubmit={mockOnSubmit} />);
-    expect(screen.getAllByDisplayValue("")[0]).toBeInTheDocument();
-    expect(screen.getAllByDisplayValue("0")[0]).toBeInTheDocument();
+  it('resets the form when reset button is clicked', async () => {
+    const user = userEvent.setup();
+    render(<MovieForm onSubmit={mockSubmit} />);
+    await user.type(screen.getByPlaceholderText('Moana'), 'Inception');
+    await user.click(screen.getByText('Reset'));
+    expect(screen.getByPlaceholderText('Moana')).toHaveValue('');
   });
 });

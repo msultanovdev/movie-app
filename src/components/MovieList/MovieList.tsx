@@ -32,7 +32,7 @@ const MovieList: FC<IMovieListProps> = () => {
       searchBy: "title",
       sortBy,
       sortOrder: "asc",
-      limit: "30"
+      limit: "30",
     },
   });
   const movies = data?.data;
@@ -78,23 +78,29 @@ const MovieList: FC<IMovieListProps> = () => {
           ]}
           selectedGenre={selectedGenre}
         />
-        <Sort selectedValue={sortBy} options={options} onChange={handleSortChange} />
+        <Sort
+          selectedValue={sortBy}
+          options={options}
+          onChange={handleSortChange}
+        />
       </div>
-      {movies?.length && (
+      {movies?.length ? (
         <p className="movies-count">{movies.length} movies found</p>
-      )}
+      ) : null}
       {isLoading && <p>Loading...</p>}
       {error && <p>{error}</p>}
       <div className={cl.movieList}>
-        {movies?.map((movie) => {
-          return (
-            <MovieTile
-              key={movie.id}
-              onClick={() => setSelectedMovie(movie)}
-              movie={movie}
-            />
-          );
-        })}
+        {movies?.length
+          ? movies.map((movie) => {
+              return (
+                <MovieTile
+                  key={movie.id}
+                  onClick={() => setSelectedMovie(movie)}
+                  movie={movie}
+                />
+              );
+            })
+          : "Nothing found"}
       </div>
     </div>
   );

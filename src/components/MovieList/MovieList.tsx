@@ -7,6 +7,7 @@ import GenreSelect from "../GenreSelect/GenreSelect";
 import Sort from "../Sort/Sort";
 import MovieDetails from "../MovieDetails/MovieDetails";
 import Search from "../Search/Search";
+import { moviesURL } from "../../consts";
 
 export interface IMovieListProps {}
 
@@ -37,7 +38,7 @@ const MovieList: FC<IMovieListProps> = () => {
     Object.entries(params).filter(([_, value]) => value !== "")
   );
   const { data, isLoading, error } = useFetchData<IMovieApi>({
-    url: "http://localhost:4000/movies",
+    url: moviesURL,
     params: cleanParams,
   });
   const movies = data?.data;

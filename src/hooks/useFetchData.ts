@@ -1,10 +1,21 @@
 import axios, { CancelTokenSource } from "axios";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 
-export const useFetchData = <T>(url: string) => {
+type FetchParams = {
+  [key: string]: string;
+};
+
+type FetchType = {
+  url: string;
+  params: FetchParams;
+};
+
+export const useFetchData = <T>({ url, params }: FetchType) => {
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const memoizedParams = useMemo(() => params, [JSON.stringify(params)]);
   const fetchData = useCallback(
     async (cancelToken?: CancelTokenSource) => {
       setIsLoading(true);
@@ -12,6 +23,7 @@ export const useFetchData = <T>(url: string) => {
       try {
         const { data } = await axios.get<T>(url, {
           cancelToken: cancelToken?.token,
+          params: params,
         });
         setData(data);
       } catch (err) {
@@ -25,7 +37,7 @@ export const useFetchData = <T>(url: string) => {
         setIsLoading(false);
       }
     },
-    [url]
+    [url, memoizedParams]
   );
 
   useEffect(() => {

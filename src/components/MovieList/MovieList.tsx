@@ -23,9 +23,10 @@ const MovieList: FC<IMovieListProps> = () => {
     value: "",
   });
   const [selectedMovie, setSelectedMovie] = useState<IMovie | null>(null);
-  const { data, isLoading, error } = useFetchData<IMovieApi>(
-    `http://localhost:4000/movies?search=${search}&filter=${[selectedGenre.value]}&searchBy=title`
-  );
+  const { data, isLoading, error } = useFetchData<IMovieApi>({
+    url: "http://localhost:4000/movies",
+    params: { search: search, filter: selectedGenre.value, searchBy: "title" },
+  });
   const movies = data?.data;
 
   const [sortedMovies, setSortedMovies] = useState(movies);

@@ -24,16 +24,21 @@ const MovieList: FC<IMovieListProps> = () => {
     value: "",
   });
   const [selectedMovie, setSelectedMovie] = useState<IMovie | null>(null);
+  const params = {
+    search,
+    filter: selectedGenre.value,
+    searchBy: "title",
+    sortBy,
+    sortOrder: "asc",
+    limit: "30",
+  };
+  const cleanParams = Object.fromEntries(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    Object.entries(params).filter(([_, value]) => value !== "")
+  );
   const { data, isLoading, error } = useFetchData<IMovieApi>({
     url: "http://localhost:4000/movies",
-    params: {
-      search,
-      filter: selectedGenre.value,
-      searchBy: "title",
-      sortBy,
-      sortOrder: "asc",
-      limit: "30",
-    },
+    params: cleanParams,
   });
   const movies = data?.data;
 

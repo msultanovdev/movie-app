@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { Genre, IMovie, IMovieApi } from "../../types";
 import MovieTile from "../MovieTile/MovieTile";
 import cl from "./MovieList.module.css";
@@ -11,13 +11,14 @@ import Search from "../Search/Search";
 export interface IMovieListProps {}
 
 const options = [
-  { value: "release-date", label: "Release Date" },
+  { value: "release_date", label: "Release Date" },
   { value: "title", label: "Title" },
 ];
 
 const MovieList: FC<IMovieListProps> = () => {
   const [query, setQuery] = useState("");
   const [search, setSearch] = useState("");
+  const [sortBy, setSortBy] = useState("title");
   const [selectedGenre, setSelectedGenre] = useState({
     title: "All",
     value: "",
@@ -25,28 +26,19 @@ const MovieList: FC<IMovieListProps> = () => {
   const [selectedMovie, setSelectedMovie] = useState<IMovie | null>(null);
   const { data, isLoading, error } = useFetchData<IMovieApi>({
     url: "http://localhost:4000/movies",
-    params: { search: search, filter: selectedGenre.value, searchBy: "title" },
+    params: {
+      search,
+      filter: selectedGenre.value,
+      searchBy: "title",
+      sortBy,
+      sortOrder: "asc",
+      limit: "30"
+    },
   });
   const movies = data?.data;
 
-  const [sortedMovies, setSortedMovies] = useState(movies);
-
-  useEffect(() => {
-    setSortedMovies(movies);
-  }, [movies]);
-
   const handleSortChange = (value: string) => {
-    const sorted =
-      movies &&
-      [...movies].sort((a, b) => {
-        if (value === "release-date") {
-          return parseInt(b.release_date) - parseInt(a.release_date);
-        } else if (value === "title") {
-          return a.title.localeCompare(b.title);
-        }
-        return 0;
-      });
-    setSortedMovies(sorted);
+    setSortBy(value);
   };
 
   const handleSelectGenre = (genre: Genre) => {
@@ -86,15 +78,15 @@ const MovieList: FC<IMovieListProps> = () => {
           ]}
           selectedGenre={selectedGenre}
         />
-        <Sort options={options} onChange={handleSortChange} />
+        <Sort selectedValue={sortBy} options={options} onChange={handleSortChange} />
       </div>
-      {sortedMovies?.length && (
-        <p className="movies-count">{sortedMovies.length} movies found</p>
+      {movies?.length && (
+        <p className="movies-count">{movies.length} movies found</p>
       )}
       {isLoading && <p>Loading...</p>}
       {error && <p>{error}</p>}
       <div className={cl.movieList}>
-        {sortedMovies?.map((movie) => {
+        {movies?.map((movie) => {
           return (
             <MovieTile
               key={movie.id}

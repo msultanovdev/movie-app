@@ -5,6 +5,7 @@ import Dialog from "../Dialog/Dialog";
 import MovieForm from "../MovieForm/MovieForm";
 import Button from "../UI/Button/Button";
 import { IMovie } from "../../types";
+import ImageWithFallback from "../ImageWithFallback/ImageWithFallback";
 
 interface IMovieTileProps extends HTMLAttributes<HTMLDivElement> {
   movie: IMovie;
@@ -46,7 +47,11 @@ const MovieTile: FC<IMovieTileProps> = ({ movie, ...props }) => {
       <button onClick={toggleMenu} className={cl.menuButton}>
         ⋮
       </button>
-      <img src={poster_path} alt={`${title} Poster`} className={cl.image} />
+      <ImageWithFallback
+        src={poster_path}
+        alt={`${title} Poster`}
+        className={cl.image}
+      />
       <div className={cl.info}>
         <h1 className={cl.title}>{title}</h1>
         <p className={cl.details}>

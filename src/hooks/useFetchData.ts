@@ -1,29 +1,40 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import axios, { CancelTokenSource } from "axios";
+import { useEffect, useState, useCallback } from "react";
 
 export const useFetchData = <T>(url: string) => {
-  const [data, setData] = useState<T>();
-  const [error, setError] = useState("");
+  const [data, setData] = useState<T | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const fetchData = async () => {
-    try {
+  const fetchData = useCallback(
+    async (cancelToken?: CancelTokenSource) => {
       setIsLoading(true);
-      const { data } = await axios.get<T>(url);
-      setData(data);
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        setError(err?.message ?? "Something went wrong...");
-      } else {
-        console.log(err);
+      setError(null);
+      try {
+        const { data } = await axios.get<T>(url, {
+          cancelToken: cancelToken?.token,
+        });
+        setData(data);
+      } catch (err) {
+        if (axios.isAxiosError(err)) {
+          setError(err.message || "Something went wrong...");
+        } else {
+          setError("An unexpected error occurred");
+          console.error(err);
+        }
+      } finally {
+        setIsLoading(false);
       }
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    },
+    [url]
+  );
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    const cancelToken = axios.CancelToken.source();
+    fetchData(cancelToken);
+    return () => cancelToken.cancel();
+  }, [fetchData]);
 
-  return { data, error, isLoading };
+  const refetch = () => fetchData();
+
+  return { data, error, isLoading, refetch };
 };

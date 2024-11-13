@@ -15,7 +15,8 @@ export interface IGenreSelectProps {
 }
 
 export interface ISearchProps {
-  initSearchQuery?: string;
+  query: string;
+  setQuery: (e: string) => void;
   onSearch: () => void;
   style?: React.CSSProperties;
 }

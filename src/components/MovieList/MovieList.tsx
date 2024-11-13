@@ -16,13 +16,16 @@ const options = [
 ];
 
 const MovieList: FC<IMovieListProps> = () => {
-  const { data, isLoading, error } = useFetchData<IMovieApi>(
-    "http://localhost:4000/movies"
-  );
-  const movies = data?.data;
-  const [sortedMovies, setSortedMovies] = useState(movies);
+  const [query, setQuery] = useState("");
+  const [search, setSearch] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("All");
   const [selectedMovie, setSelectedMovie] = useState<IMovie | null>(null);
+  const { data, isLoading, error } = useFetchData<IMovieApi>(
+    `http://localhost:4000/movies?search=${search}&filter=${[selectedGenre === "All" ? "" : selectedGenre]}&searchBy=title`
+  );
+  const movies = data?.data;
+
+  const [sortedMovies, setSortedMovies] = useState(movies);
 
   useEffect(() => {
     setSortedMovies(movies);
@@ -47,7 +50,7 @@ const MovieList: FC<IMovieListProps> = () => {
   };
 
   const handleSearch = () => {
-    console.log("Searching...");
+    setSearch(query);
   };
 
   return (
@@ -59,7 +62,12 @@ const MovieList: FC<IMovieListProps> = () => {
             movie={selectedMovie}
           />
         ) : (
-          <Search onSearch={handleSearch} style={{ margin: "10px 0" }} />
+          <Search
+            setQuery={setQuery}
+            query={query}
+            onSearch={handleSearch}
+            style={{ margin: "10px 0" }}
+          />
         )}
       </div>
       <div className="movies-sort">

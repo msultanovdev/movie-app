@@ -54,7 +54,7 @@ const MovieList: FC<IMovieListProps> = () => {
   const { movieId } = useParams();
   const selectedMovie = useMemo(() => {
     return movies?.find((movie) => movie.id === Number(movieId));
-  }, [movieId]);
+  }, [movieId, movies]);
 
   const updateSearchParam = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams);

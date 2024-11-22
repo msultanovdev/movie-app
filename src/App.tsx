@@ -9,6 +9,7 @@ function App() {
       <GlobalScrollbar skin="dark" />
       <Routes>
         <Route path="/" element={<MovieList />} />
+        <Route path="/:movieId" element={<MovieList />} />
       </Routes>
     </main>
   );

@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import { Genre, IMovie, IMovieApi } from "../../types";
 import MovieTile from "../MovieTile/MovieTile";
 import cl from "./MovieList.module.css";
@@ -8,7 +8,12 @@ import Sort from "../Sort/Sort";
 import MovieDetails from "../MovieDetails/MovieDetails";
 import Search from "../Search/Search";
 import { genres, moviesURL } from "../../consts";
-import { useSearchParams } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 
 export interface IMovieListProps {}
 
@@ -19,15 +24,16 @@ const options = [
 
 const MovieList: FC<IMovieListProps> = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [query, setQuery] = useState(searchParams.get("search") ?? "");
-  const [sortBy, setSortBy] = useState("title");
+  const [sortBy, setSortBy] = useState(searchParams.get("sortBy") ?? "title");
   const [selectedGenre, setSelectedGenre] = useState({
     title:
       genres.find((genre) => genre.value === searchParams.get("filter"))
         ?.title ?? "All",
     value: searchParams.get("filter") ?? "",
   });
-  const [selectedMovie, setSelectedMovie] = useState<IMovie | null>(null);
   const params = {
     search: searchParams.get("search") ?? "",
     filter: searchParams.get("filter") ?? "",
@@ -36,7 +42,6 @@ const MovieList: FC<IMovieListProps> = () => {
     sortOrder: "asc",
     limit: "30",
   };
-
   const cleanParams = Object.fromEntries(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     Object.entries(params).filter(([_, value]) => value !== "")
@@ -46,50 +51,46 @@ const MovieList: FC<IMovieListProps> = () => {
     params: cleanParams,
   });
   const movies = data?.data;
+  const { movieId } = useParams();
+  const selectedMovie = useMemo(() => {
+    return movies?.find((movie) => movie.id === Number(movieId));
+  }, [movieId]);
+
+  const updateSearchParam = (key: string, value: string) => {
+    const params = new URLSearchParams(searchParams);
+    if (value) {
+      params.set(key, value);
+    } else {
+      params.delete(key);
+    }
+    setSearchParams(params);
+  };
 
   const handleSortChange = (value: string) => {
     setSortBy(value);
-    setSearchParams((prev) => {
-      if (value) {
-        prev.set("sortBy", value);
-      } else {
-        prev.delete("sortBy");
-      }
-      return prev;
-    });
+    updateSearchParam("sortBy", value);
   };
 
   const handleSelectGenre = (genre: Genre) => {
+    navigate("/");
     setSelectedGenre(genre);
-    setSearchParams((prev) => {
-      if (genre.value) {
-        prev.set("filter", genre.value);
-      } else {
-        prev.delete("filter");
-      }
-      return prev;
-    });
+    updateSearchParam("filter", genre.value);
   };
 
   const handleSearch = () => {
-    setSearchParams((prev) => {
-      if (query) {
-        prev.set("search", query);
-      } else {
-        prev.delete("search");
-      }
-      return prev;
-    });
+    updateSearchParam("search", query);
+  };
+
+  const handleMovieClick = (movie: IMovie) => {
+    const currentParams = new URLSearchParams(location.search);
+    navigate(`/${movie.id}?${currentParams.toString()}`);
   };
 
   return (
     <div className={cl.movieListWrapper}>
       <div className={cl.moviesListHeader}>
         {selectedMovie ? (
-          <MovieDetails
-            onBackButtonClick={() => setSelectedMovie(null)}
-            movie={selectedMovie}
-          />
+          <MovieDetails movie={selectedMovie} />
         ) : (
           <Search
             setQuery={setQuery}
@@ -122,7 +123,7 @@ const MovieList: FC<IMovieListProps> = () => {
               return (
                 <MovieTile
                   key={movie.id}
-                  onClick={() => setSelectedMovie(movie)}
+                  onClick={() => handleMovieClick(movie)}
                   movie={movie}
                 />
               );

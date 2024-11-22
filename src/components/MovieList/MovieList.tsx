@@ -64,6 +64,9 @@ const MovieList: FC<IMovieListProps> = () => {
       params.delete(key);
     }
     setSearchParams(params);
+
+    params.delete("movieId");
+    navigate(`/?${params.toString()}`);
   };
 
   const handleSortChange = (value: string) => {
@@ -72,7 +75,6 @@ const MovieList: FC<IMovieListProps> = () => {
   };
 
   const handleSelectGenre = (genre: Genre) => {
-    navigate("/");
     setSelectedGenre(genre);
     updateSearchParam("filter", genre.value);
   };

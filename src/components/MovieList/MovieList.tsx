@@ -7,7 +7,8 @@ import GenreSelect from "../GenreSelect/GenreSelect";
 import Sort from "../Sort/Sort";
 import MovieDetails from "../MovieDetails/MovieDetails";
 import Search from "../Search/Search";
-import { moviesURL } from "../../consts";
+import { genres, moviesURL } from "../../consts";
+import { useSearchParams } from "react-router-dom";
 
 export interface IMovieListProps {}
 
@@ -17,22 +18,25 @@ const options = [
 ];
 
 const MovieList: FC<IMovieListProps> = () => {
-  const [query, setQuery] = useState("");
-  const [search, setSearch] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [query, setQuery] = useState(searchParams.get("search") ?? "");
   const [sortBy, setSortBy] = useState("title");
   const [selectedGenre, setSelectedGenre] = useState({
-    title: "All",
-    value: "",
+    title:
+      genres.find((genre) => genre.value === searchParams.get("filter"))
+        ?.title ?? "All",
+    value: searchParams.get("filter") ?? "",
   });
   const [selectedMovie, setSelectedMovie] = useState<IMovie | null>(null);
   const params = {
-    search,
-    filter: selectedGenre.value,
+    search: searchParams.get("search") ?? "",
+    filter: searchParams.get("filter") ?? "",
     searchBy: "title",
-    sortBy,
+    sortBy: searchParams.get("sortBy") ?? "",
     sortOrder: "asc",
     limit: "30",
   };
+
   const cleanParams = Object.fromEntries(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     Object.entries(params).filter(([_, value]) => value !== "")
@@ -45,14 +49,37 @@ const MovieList: FC<IMovieListProps> = () => {
 
   const handleSortChange = (value: string) => {
     setSortBy(value);
+    setSearchParams((prev) => {
+      if (value) {
+        prev.set("sortBy", value);
+      } else {
+        prev.delete("sortBy");
+      }
+      return prev;
+    });
   };
 
   const handleSelectGenre = (genre: Genre) => {
     setSelectedGenre(genre);
+    setSearchParams((prev) => {
+      if (genre.value) {
+        prev.set("filter", genre.value);
+      } else {
+        prev.delete("filter");
+      }
+      return prev;
+    });
   };
 
   const handleSearch = () => {
-    setSearch(query);
+    setSearchParams((prev) => {
+      if (query) {
+        prev.set("search", query);
+      } else {
+        prev.delete("search");
+      }
+      return prev;
+    });
   };
 
   return (
@@ -75,13 +102,7 @@ const MovieList: FC<IMovieListProps> = () => {
       <div className="movies-sort">
         <GenreSelect
           onSelect={handleSelectGenre}
-          genres={[
-            { title: "All", value: "" },
-            { title: "Documentary", value: "documentary" },
-            { title: "Comedy", value: "comedy" },
-            { title: "Horror", value: "horror" },
-            { title: "Crime", value: "crime" },
-          ]}
+          genres={genres}
           selectedGenre={selectedGenre}
         />
         <Sort

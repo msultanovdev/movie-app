@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from "react";
+import { FC, useState } from "react";
 import { Genre, IMovie, IMovieApi } from "../../types";
 import MovieTile from "../MovieTile/MovieTile";
 import cl from "./MovieList.module.css";
@@ -18,6 +18,7 @@ import {
 export interface IMovieListProps {}
 
 const options = [
+  { value: "", label: "sortBy" },
   { value: "release_date", label: "Release Date" },
   { value: "title", label: "Title" },
 ];
@@ -27,7 +28,7 @@ const MovieList: FC<IMovieListProps> = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [query, setQuery] = useState(searchParams.get("search") ?? "");
-  const [sortBy, setSortBy] = useState(searchParams.get("sortBy") ?? "title");
+  const [sortBy, setSortBy] = useState(searchParams.get("sortBy") ?? "");
   const [selectedGenre, setSelectedGenre] = useState({
     title:
       genres.find((genre) => genre.value === searchParams.get("filter"))
@@ -52,9 +53,9 @@ const MovieList: FC<IMovieListProps> = () => {
   });
   const movies = data?.data;
   const { movieId } = useParams();
-  const selectedMovie = useMemo(() => {
-    return movies?.find((movie) => movie.id === Number(movieId));
-  }, [movieId, movies]);
+  const { data: selectedMovie } = useFetchData<IMovie>({
+    url: `${moviesURL}/${movieId}`,
+  });
 
   const updateSearchParam = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams);
@@ -89,7 +90,7 @@ const MovieList: FC<IMovieListProps> = () => {
   };
 
   return (
-    <div className={cl.movieListWrapper}>
+    <div className={cl.movieListWrapper} data-testid="cy-movie-list">
       <div className={cl.moviesListHeader}>
         {selectedMovie ? (
           <MovieDetails movie={selectedMovie} />
@@ -115,7 +116,9 @@ const MovieList: FC<IMovieListProps> = () => {
         />
       </div>
       {movies?.length ? (
-        <p className="movies-count">{movies.length} movies found</p>
+        <p data-testid="cy-movies-count" className="movies-count">
+          {movies.length} movies found
+        </p>
       ) : null}
       {isLoading && <p>Loading...</p>}
       {error && <p>{error}</p>}
@@ -124,6 +127,7 @@ const MovieList: FC<IMovieListProps> = () => {
           ? movies.map((movie) => {
               return (
                 <MovieTile
+                  data-testid="cy-movie-tile"
                   key={movie.id}
                   onClick={() => handleMovieClick(movie)}
                   movie={movie}

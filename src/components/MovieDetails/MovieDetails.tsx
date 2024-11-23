@@ -19,7 +19,7 @@ const MovieDetails: FC<IMovieDetailsProps> = ({ movie, onBackButtonClick }) => {
     navigate(`/?${currentParams.toString()}`);
   };
   return (
-    <div className={styles.container}>
+    <div className={styles.container} data-testid="cy-movie-details">
       <div className={styles.wrapper}>
         <span onClick={handleBackToSearch} className={styles.back}>
           Search

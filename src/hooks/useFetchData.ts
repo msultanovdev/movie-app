@@ -1,6 +1,6 @@
 import axios, { CancelTokenSource } from "axios";
 import { useEffect, useState, useCallback } from "react";
-import { useDeepCompareMemoize } from 'use-deep-compare-effect';
+import { useDeepCompareMemoize } from "use-deep-compare-effect";
 
 type FetchParams = {
   [key: string]: string;
@@ -8,7 +8,7 @@ type FetchParams = {
 
 type FetchType = {
   url: string;
-  params: FetchParams;
+  params?: FetchParams;
 };
 
 export const useFetchData = <T>({ url, params }: FetchType) => {

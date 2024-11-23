@@ -24,6 +24,7 @@ const GenreSelect: FC<IGenreSelectProps> = ({
         {genres.map((genre, index) => {
           return (
             <li
+              data-testid="cy-genre-select-item"
               onClick={() => onSelect(genre)}
               onKeyDown={(e) => handleKeyDown(e, genre)}
               className={selectedGenre.title === genre.title ? cl.active : ""}

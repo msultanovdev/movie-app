@@ -12,12 +12,17 @@ const Sort: FC<ISortProps> = ({ options, onChange, selectedValue }) => {
     <div className={styles.selectContainer}>
       <span className={styles.label}>Sort by</span>
       <select
+        data-testid="cy-sort-dropdown"
         defaultValue={selectedValue}
         className={styles.select}
         onChange={(e) => onChange(e.target.value)}
       >
         {options.map((option) => (
-          <option key={option.value} value={option.value}>
+          <option
+            data-testid={`sort-option-${option.label}`}
+            key={option.value}
+            value={option.value}
+          >
             {option.label}
           </option>
         ))}

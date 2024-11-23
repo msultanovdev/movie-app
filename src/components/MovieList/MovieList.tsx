@@ -53,7 +53,11 @@ const MovieList: FC<IMovieListProps> = () => {
   });
   const movies = data?.data;
   const { movieId } = useParams();
-  const { data: selectedMovie } = useFetchData<IMovie>({
+  const {
+    data: selectedMovie,
+    isLoading: isMovieLoading,
+    error: movieError,
+  } = useFetchData<IMovie>({
     url: `${moviesURL}/${movieId}`,
   });
 
@@ -92,6 +96,8 @@ const MovieList: FC<IMovieListProps> = () => {
   return (
     <div className={cl.movieListWrapper} data-testid="cy-movie-list">
       <div className={cl.moviesListHeader}>
+        {isMovieLoading && <p style={{ color: "white" }}>Loading...</p>}
+        {movieError && <p style={{ color: "white" }}>{movieError}</p>}
         {selectedMovie ? (
           <MovieDetails movie={selectedMovie} />
         ) : (

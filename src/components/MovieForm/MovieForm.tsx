@@ -93,8 +93,11 @@ const MovieForm: FC<IMovieFormProps> = (props) => {
         </div>
 
         <div className="form-group">
-          <label>Release Date {errors.release_date && "is required"}</label>
+          <label htmlFor="release_date">
+            Release Date {errors.release_date && "is required"}
+          </label>
           <input
+            id="release_date"
             defaultValue={initiaMovieState?.release_date}
             {...register("release_date", { required: true })}
             type="date"

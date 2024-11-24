@@ -34,7 +34,7 @@ const MovieDetails: FC<IMovieDetailsProps> = ({ movie, onBackButtonClick }) => {
             <h1 className={styles.title}>{movie.title}</h1>
             <div className={styles.rating}>{movie.vote_average}</div>
           </div>
-          <p className={styles.genre}>{movie.genres.map((g) => `${g} `)}</p>
+          <p className={styles.genre}>{movie?.genres?.map((g) => `${g} `)}</p>
           <div className={styles.meta}>
             <span className={styles.year}>{movie.release_date}</span>
             <span className={styles.duration}>

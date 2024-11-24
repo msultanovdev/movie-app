@@ -23,7 +23,7 @@ describe("MovieList Component", () => {
       refetch: vi.fn(() => Promise.resolve()),
     });
     render(<MovieList />, { wrapper: BrowserRouter });
-    expect(screen.getByText("Loading...")).toBeInTheDocument();
+    expect(screen.getByTestId("movies-loading")).toBeInTheDocument();
   });
   it("renders movies when fetched successfully", async () => {
     vi.mocked(useFetchData).mockReturnValue({

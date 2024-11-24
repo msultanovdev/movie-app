@@ -97,7 +97,7 @@ const MovieList: FC<IMovieListProps> = () => {
     <div className={cl.movieListWrapper} data-testid="cy-movie-list">
       <div className={cl.moviesListHeader}>
         {isMovieLoading && <p style={{ color: "white" }}>Loading...</p>}
-        {movieError && <p style={{ color: "white" }}>{movieError}</p>}
+        {(movieError && movieId) && <p style={{ color: "white" }}>{movieError}</p>}
         {selectedMovie ? (
           <MovieDetails movie={selectedMovie} />
         ) : (

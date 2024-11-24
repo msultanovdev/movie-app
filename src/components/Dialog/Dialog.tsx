@@ -5,8 +5,8 @@ import "./Dialog.css";
 
 interface DialogProps {
   title: string | JSX.Element;
-  children: React.ReactNode;
-  onClose: (e: React.MouseEvent) => void;
+  children?: React.ReactNode;
+  onClose?: (e: React.MouseEvent) => void;
   isFocusTrapActive?: boolean;
 }
 

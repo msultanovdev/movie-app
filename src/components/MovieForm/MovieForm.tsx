@@ -44,7 +44,7 @@ const MovieForm: FC<IMovieFormProps> = (props) => {
     reset,
     setValue,
   } = useForm<IMovie<SelectOptionType>>();
-  const { onSubmit } = props;
+  const { onSubmit, initiaMovieState } = props;
   // const [formData, setFormData] = useState<IMovie>(
   //   initiaMovieState ?? epmtyMovieState
   // );
@@ -84,6 +84,7 @@ const MovieForm: FC<IMovieFormProps> = (props) => {
         <div className="form-group form-full-input">
           <label>Title {errors.title && "is required"}</label>
           <input
+            defaultValue={initiaMovieState?.title}
             {...register("title", { required: true })}
             type="text"
             name="title"
@@ -94,6 +95,7 @@ const MovieForm: FC<IMovieFormProps> = (props) => {
         <div className="form-group">
           <label>Release Date {errors.release_date && "is required"}</label>
           <input
+            defaultValue={initiaMovieState?.release_date}
             {...register("release_date", { required: true })}
             type="date"
             name="release_date"
@@ -107,6 +109,7 @@ const MovieForm: FC<IMovieFormProps> = (props) => {
             Movie URL {errors.poster_path && "must follow url pattern"}
           </label>
           <input
+            defaultValue={initiaMovieState?.poster_path}
             {...register("poster_path", {
               required: true,
               pattern: /https?:\/\/[^\s/$.?#].[^\s]*/i,
@@ -121,6 +124,7 @@ const MovieForm: FC<IMovieFormProps> = (props) => {
             Rating {errors.vote_average && "must be between 0 - 10"}
           </label>
           <input
+            defaultValue={initiaMovieState?.vote_average}
             {...register("vote_average", {
               required: true,
               min: 0,
@@ -139,6 +143,9 @@ const MovieForm: FC<IMovieFormProps> = (props) => {
         <div className="form-group form-full-input">
           <label>Genre {errors.genres && "select at least one genre"}</label>
           <Controller
+            defaultValue={initiaMovieState?.genres.map((genre) => {
+              return { value: genre, label: genre };
+            })}
             name="genres"
             control={control}
             render={({ field }) => {
@@ -159,6 +166,7 @@ const MovieForm: FC<IMovieFormProps> = (props) => {
         <div className="form-group">
           <label>Runtime</label>
           <input
+            defaultValue={initiaMovieState?.runtime}
             {...register("runtime", { required: true, valueAsNumber: true })}
             type="number"
             name="runtime"
@@ -170,6 +178,7 @@ const MovieForm: FC<IMovieFormProps> = (props) => {
       <div className="form-group overview">
         <label>Overview</label>
         <textarea
+          defaultValue={initiaMovieState?.overview}
           {...register("overview", { required: true })}
           name="overview"
           placeholder="Movie description"

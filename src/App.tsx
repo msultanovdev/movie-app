@@ -3,6 +3,7 @@ import "./App.css";
 import MovieList from "./components/MovieList/MovieList";
 import { GlobalScrollbar } from "mac-scrollbar";
 import AddMovieForm from "./components/AddMovieForm/AddMovieForm";
+import EditMovieForm from "./components/EditMovieForm/EditMovieForm";
 
 function App() {
   return (
@@ -12,7 +13,9 @@ function App() {
         <Route path="/" element={<MovieList />}>
           <Route path="new" element={<AddMovieForm />} />
         </Route>
-        <Route path="/:movieId" element={<MovieList />} />
+        <Route path="/:movieId" element={<MovieList />}>
+          <Route path="edit" element={<EditMovieForm />} />
+        </Route>
       </Routes>
     </main>
   );

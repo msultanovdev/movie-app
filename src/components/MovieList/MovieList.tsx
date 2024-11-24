@@ -9,6 +9,7 @@ import MovieDetails from "../MovieDetails/MovieDetails";
 import Search from "../Search/Search";
 import { genres, moviesURL } from "../../consts";
 import {
+  Outlet,
   useLocation,
   useNavigate,
   useParams,
@@ -111,6 +112,7 @@ const MovieList: FC<IMovieListProps> = () => {
             style={{ margin: "10px 0" }}
           />
         )}
+        <Outlet />
       </div>
       <div className="movies-sort">
         <GenreSelect

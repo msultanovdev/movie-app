@@ -2,7 +2,6 @@ import React, { FC } from "react";
 import cl from "./Search.module.css";
 import Button from "../UI/Button/Button";
 import { ISearchProps } from "../../types";
-import { Outlet } from "react-router-dom";
 
 const Search: FC<ISearchProps> = ({ query, setQuery, onSearch, ...props }) => {
   const handleSearch = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -28,7 +27,6 @@ const Search: FC<ISearchProps> = ({ query, setQuery, onSearch, ...props }) => {
           Search
         </Button>
       </form>
-      <Outlet />
     </>
   );
 };

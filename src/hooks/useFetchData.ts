@@ -9,9 +9,14 @@ type FetchParams = {
 type FetchType = {
   url: string;
   params?: FetchParams;
+  isRequestNeed?: boolean;
 };
 
-export const useFetchData = <T>({ url, params }: FetchType) => {
+export const useFetchData = <T>({
+  url,
+  params,
+  isRequestNeed = true,
+}: FetchType) => {
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -19,6 +24,10 @@ export const useFetchData = <T>({ url, params }: FetchType) => {
   const memoizedParams = useDeepCompareMemoize(params);
   const fetchData = useCallback(
     async (cancelToken?: CancelTokenSource) => {
+      if (!isRequestNeed) {
+        setData(null);
+        return;
+      }
       setIsLoading(true);
       setError(null);
       try {

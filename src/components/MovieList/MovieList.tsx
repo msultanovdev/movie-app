@@ -59,6 +59,7 @@ const MovieList: FC<IMovieListProps> = () => {
     error: movieError,
   } = useFetchData<IMovie>({
     url: `${moviesURL}/${movieId}`,
+    isRequestNeed: !!movieId,
   });
 
   const updateSearchParam = (key: string, value: string) => {
@@ -97,7 +98,9 @@ const MovieList: FC<IMovieListProps> = () => {
     <div className={cl.movieListWrapper} data-testid="cy-movie-list">
       <div className={cl.moviesListHeader}>
         {isMovieLoading && <p style={{ color: "white" }}>Loading...</p>}
-        {(movieError && movieId) && <p style={{ color: "white" }}>{movieError}</p>}
+        {movieError && movieId && (
+          <p style={{ color: "white" }}>{movieError}</p>
+        )}
         {selectedMovie ? (
           <MovieDetails movie={selectedMovie} />
         ) : (

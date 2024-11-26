@@ -132,7 +132,7 @@ const MovieList: FC<IMovieListProps> = () => {
         </p>
       ) : null}
       {isLoading && <p data-testid="movies-loading">Loading...</p>}
-      {error && <p>{error}</p>}
+      {error && <p style={{ color: "white" }}>{error}</p>}
       <div className={cl.movieList}>
         {movies?.length
           ? movies.map((movie) => {

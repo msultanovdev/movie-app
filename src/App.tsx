@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import MovieList from "./components/MovieList/MovieList";
 import { GlobalScrollbar } from "mac-scrollbar";
@@ -9,14 +9,16 @@ function App() {
   return (
     <main className="main">
       <GlobalScrollbar skin="dark" />
-      <Routes>
-        <Route path="/" element={<MovieList />}>
-          <Route path="new" element={<AddMovieForm />} />
-        </Route>
-        <Route path="/:movieId" element={<MovieList />}>
-          <Route path="edit" element={<EditMovieForm />} />
-        </Route>
-      </Routes>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<MovieList />}>
+            <Route path="new" element={<AddMovieForm />} />
+          </Route>
+          <Route path="/:movieId" element={<MovieList />}>
+            <Route path="edit" element={<EditMovieForm />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </main>
   );
 }

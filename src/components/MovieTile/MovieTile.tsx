@@ -72,7 +72,7 @@ const MovieTile: FC<IMovieTileProps> = ({ movie, ...props }) => {
         >
           <div className={cl.removeConfirmation}>
             <p>Are you sure you want to delete this movie?</p>
-            <Button>Confirm</Button>
+            <Button className={cl.button}>Confirm</Button>
           </div>
         </Dialog>
       )}

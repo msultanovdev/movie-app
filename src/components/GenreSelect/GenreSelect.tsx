@@ -27,7 +27,9 @@ const GenreSelect: FC<IGenreSelectProps> = ({
               data-testid="cy-genre-select-item"
               onClick={() => onSelect(genre)}
               onKeyDown={(e) => handleKeyDown(e, genre)}
-              className={selectedGenre.title === genre.title ? cl.active : ""}
+              className={
+                cl.list + selectedGenre.title === genre.title ? cl.active : ""
+              }
               key={index}
               tabIndex={0}
             >

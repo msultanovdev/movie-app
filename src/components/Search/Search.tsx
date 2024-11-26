@@ -13,6 +13,7 @@ const Search: FC<ISearchProps> = ({ query, setQuery, onSearch, ...props }) => {
     <>
       <form className={cl.searchForm} {...props}>
         <input
+          className={cl.input}
           data-testid="cy-search-input"
           value={query}
           type="text"

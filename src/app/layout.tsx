@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import "../index.css";
+import "../App.css";
 
 export const metadata: Metadata = {
   title: "Movie App",
@@ -14,7 +15,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div id="root">{children}</div>
+        <div id="root" className="main">
+          {children}
+        </div>
       </body>
     </html>
   );

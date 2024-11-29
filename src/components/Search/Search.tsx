@@ -1,29 +1,35 @@
 import React, { FC } from "react";
 import cl from "./Search.module.css";
 import Button from "../UI/Button/Button";
-import { ISearchProps } from "../../types";
 
-const Search: FC<ISearchProps> = ({ query, setQuery, onSearch, ...props }) => {
+export interface ISearchProps {
+  // query: string;
+  // setQuery: (e: string) => void;
+  // onSearch: () => void;
+  // style?: React.CSSProperties;
+}
+
+const Search: FC<ISearchProps> = () => {
   const handleSearch = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    onSearch();
+    // onSearch();
   };
 
   return (
     <>
-      <form className={cl.searchForm} {...props}>
+      <form className={cl.searchForm} >
         <input
           className={cl.input}
           data-testid="cy-search-input"
-          value={query}
+          // value={query}
           type="text"
           placeholder="What do you want to watch?"
-          onChange={(e) => setQuery(e.target.value)}
+          // onChange={(e) => setQuery(e.target.value)}
         />
         <Button
           data-testid="cy-search-submit"
           type="submit"
-          onClick={handleSearch}
+          // onClick={handleSearch}
         >
           Search
         </Button>

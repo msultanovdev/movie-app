@@ -1,4 +1,4 @@
-import { ImgHTMLAttributes, FC, useState, useEffect } from "react";
+import { ImgHTMLAttributes, FC } from "react";
 
 interface IImageWithFallbackProps extends ImgHTMLAttributes<HTMLImageElement> {
   src: string;
@@ -15,18 +15,18 @@ const ImageWithFallback: FC<IImageWithFallbackProps> = ({
   alt,
   ...props
 }) => {
-  const [imgSrc, setImgSrc] = useState(src);
+  // const [imgSrc, setImgSrc] = useState(src);
 
-  useEffect(() => {
-    setImgSrc(src);
-  }, [src]);
+  // useEffect(() => {
+  //   // setImgSrc(src);
+  // }, [src]);
 
   return (
     <img
       {...props}
-      src={imgSrc}
+      src={src}
       alt={alt}
-      onError={() => setImgSrc(fallback)}
+      // onError={() => setImgSrc(fallback)}
     />
   );
 };

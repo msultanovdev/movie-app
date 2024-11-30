@@ -3,7 +3,7 @@ import { IMovie } from "../../types";
 import styles from "./MovieDetails.module.css";
 import { formatTime } from "../../utils/helper";
 import ImageWithFallback from "../ImageWithFallback/ImageWithFallback";
-import { useLocation, useNavigate } from "react-router-dom";
+import Link from "next/link";
 
 export interface IMovieDetailsProps {
   movie: IMovie;
@@ -11,19 +11,17 @@ export interface IMovieDetailsProps {
 }
 
 const MovieDetails: FC<IMovieDetailsProps> = ({ movie, onBackButtonClick }) => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const handleBackToSearch = () => {
-    onBackButtonClick && onBackButtonClick(null);
-    const currentParams = new URLSearchParams(location.search);
-    navigate(`/?${currentParams.toString()}`);
-  };
+  // const navigate = useNavigate();
+  // const location = useLocation();
+  // const handleBackToSearch = () => {
+  //   onBackButtonClick && onBackButtonClick(null);
+  //   const currentParams = new URLSearchParams(location.search);
+  //   navigate(`/?${currentParams.toString()}`);
+  // };
   return (
     <div className={styles.container} data-testid="cy-movie-details">
       <div className={styles.wrapper}>
-        <span onClick={handleBackToSearch} className={styles.back}>
-          Search
-        </span>
+        <Link href={'/'} className={styles.back}>Search</Link>
         <ImageWithFallback
           src={movie.poster_path}
           alt={`${movie.title} Poster`}

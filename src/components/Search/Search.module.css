@@ -2,7 +2,7 @@
   margin: 0 auto;
   display: flex;
 
-  input {
+  .input {
     color: white;
     padding: 10px;
     width: 713px;

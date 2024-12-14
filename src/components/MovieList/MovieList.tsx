@@ -7,29 +7,39 @@ import GenreSelect from "../GenreSelect/GenreSelect";
 import Sort from "../Sort/Sort";
 import MovieDetails from "../MovieDetails/MovieDetails";
 import Search from "../Search/Search";
-import { moviesURL } from "../../consts";
+import { genres, moviesURL } from "../../consts";
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 
 export interface IMovieListProps {}
 
 const options = [
+  { value: "", label: "sortBy" },
   { value: "release_date", label: "Release Date" },
   { value: "title", label: "Title" },
 ];
 
 const MovieList: FC<IMovieListProps> = () => {
-  const [query, setQuery] = useState("");
-  const [search, setSearch] = useState("");
-  const [sortBy, setSortBy] = useState("title");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [query, setQuery] = useState(searchParams.get("search") ?? "");
+  const [sortBy, setSortBy] = useState(searchParams.get("sortBy") ?? "");
   const [selectedGenre, setSelectedGenre] = useState({
-    title: "All",
-    value: "",
+    title:
+      genres.find((genre) => genre.value === searchParams.get("filter"))
+        ?.title ?? "All",
+    value: searchParams.get("filter") ?? "",
   });
-  const [selectedMovie, setSelectedMovie] = useState<IMovie | null>(null);
   const params = {
-    search,
-    filter: selectedGenre.value,
+    search: searchParams.get("search") ?? "",
+    filter: searchParams.get("filter") ?? "",
     searchBy: "title",
-    sortBy,
+    sortBy: searchParams.get("sortBy") ?? "",
     sortOrder: "asc",
     limit: "30",
   };
@@ -42,27 +52,54 @@ const MovieList: FC<IMovieListProps> = () => {
     params: cleanParams,
   });
   const movies = data?.data;
+  const { movieId } = useParams();
+  const {
+    data: selectedMovie,
+    isLoading: isMovieLoading,
+    error: movieError,
+  } = useFetchData<IMovie>({
+    url: `${moviesURL}/${movieId}`,
+  });
+
+  const updateSearchParam = (key: string, value: string) => {
+    const params = new URLSearchParams(searchParams);
+    if (value) {
+      params.set(key, value);
+    } else {
+      params.delete(key);
+    }
+    setSearchParams(params);
+
+    params.delete("movieId");
+    navigate(`/?${params.toString()}`);
+  };
 
   const handleSortChange = (value: string) => {
     setSortBy(value);
+    updateSearchParam("sortBy", value);
   };
 
   const handleSelectGenre = (genre: Genre) => {
     setSelectedGenre(genre);
+    updateSearchParam("filter", genre.value);
   };
 
   const handleSearch = () => {
-    setSearch(query);
+    updateSearchParam("search", query);
+  };
+
+  const handleMovieClick = (movie: IMovie) => {
+    const currentParams = new URLSearchParams(location.search);
+    navigate(`/${movie.id}?${currentParams.toString()}`);
   };
 
   return (
-    <div className={cl.movieListWrapper}>
+    <div className={cl.movieListWrapper} data-testid="cy-movie-list">
       <div className={cl.moviesListHeader}>
+        {isMovieLoading && <p style={{ color: "white" }}>Loading...</p>}
+        {movieError && <p style={{ color: "white" }}>{movieError}</p>}
         {selectedMovie ? (
-          <MovieDetails
-            onBackButtonClick={() => setSelectedMovie(null)}
-            movie={selectedMovie}
-          />
+          <MovieDetails movie={selectedMovie} />
         ) : (
           <Search
             setQuery={setQuery}
@@ -75,13 +112,7 @@ const MovieList: FC<IMovieListProps> = () => {
       <div className="movies-sort">
         <GenreSelect
           onSelect={handleSelectGenre}
-          genres={[
-            { title: "All", value: "" },
-            { title: "Documentary", value: "documentary" },
-            { title: "Comedy", value: "comedy" },
-            { title: "Horror", value: "horror" },
-            { title: "Crime", value: "crime" },
-          ]}
+          genres={genres}
           selectedGenre={selectedGenre}
         />
         <Sort
@@ -91,7 +122,9 @@ const MovieList: FC<IMovieListProps> = () => {
         />
       </div>
       {movies?.length ? (
-        <p className="movies-count">{movies.length} movies found</p>
+        <p data-testid="cy-movies-count" className="movies-count">
+          {movies.length} movies found
+        </p>
       ) : null}
       {isLoading && <p>Loading...</p>}
       {error && <p>{error}</p>}
@@ -100,8 +133,9 @@ const MovieList: FC<IMovieListProps> = () => {
           ? movies.map((movie) => {
               return (
                 <MovieTile
+                  data-testid="cy-movie-tile"
                   key={movie.id}
-                  onClick={() => setSelectedMovie(movie)}
+                  onClick={() => handleMovieClick(movie)}
                   movie={movie}
                 />
               );

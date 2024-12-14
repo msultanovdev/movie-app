@@ -12,12 +12,17 @@ const Search: FC<ISearchProps> = ({ query, setQuery, onSearch, ...props }) => {
   return (
     <form className={cl.searchForm} {...props}>
       <input
+        data-testid="cy-search-input"
         value={query}
         type="text"
         placeholder="What do you want to watch?"
         onChange={(e) => setQuery(e.target.value)}
       />
-      <Button type="submit" onClick={handleSearch}>
+      <Button
+        data-testid="cy-search-submit"
+        type="submit"
+        onClick={handleSearch}
+      >
         Search
       </Button>
     </form>

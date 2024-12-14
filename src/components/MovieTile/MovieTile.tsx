@@ -53,7 +53,9 @@ const MovieTile: FC<IMovieTileProps> = ({ movie, ...props }) => {
         className={cl.image}
       />
       <div className={cl.info}>
-        <h1 className={cl.title}>{title}</h1>
+        <h2 className={cl.title} data-testid="cy-movie-title">
+          {title}
+        </h2>
         <p className={cl.details}>
           <span className={cl.year}>
             {new Date(release_date).getFullYear()}

@@ -3,6 +3,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { useFetchData } from "../../hooks/useFetchData";
 import MovieList from "./MovieList";
 import "@testing-library/jest-dom";
+import { BrowserRouter } from "react-router-dom";
 
 vi.mock("../../hooks/useFetchData");
 describe("MovieList Component", () => {
@@ -21,7 +22,7 @@ describe("MovieList Component", () => {
       data: null,
       refetch: vi.fn(() => Promise.resolve()),
     });
-    render(<MovieList />);
+    render(<MovieList />, { wrapper: BrowserRouter });
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
   it("renders movies when fetched successfully", async () => {
@@ -46,7 +47,7 @@ describe("MovieList Component", () => {
       },
       refetch: vi.fn(() => Promise.resolve()),
     });
-    render(<MovieList />);
+    render(<MovieList />, { wrapper: BrowserRouter });
     await waitFor(() => {
       expect(screen.getByText("2 movies found")).toBeInTheDocument();
       expect(screen.getByText("Movie Title 1")).toBeInTheDocument();
@@ -60,7 +61,7 @@ describe("MovieList Component", () => {
       data: null,
       refetch: vi.fn(() => Promise.resolve()),
     });
-    render(<MovieList />);
+    render(<MovieList />, { wrapper: BrowserRouter });
     expect(screen.getByText("Failed to fetch")).toBeInTheDocument();
   });
 });

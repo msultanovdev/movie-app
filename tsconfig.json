@@ -19,8 +19,8 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "types": ["vitest/globals", "@wdio/globals/types"]
+    "types": ["@testing-library/jest-dom"]
   },
-  "include": ["src"],
+  "include": ["src", "cypress"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

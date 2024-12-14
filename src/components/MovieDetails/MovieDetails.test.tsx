@@ -3,6 +3,7 @@ import { render, fireEvent, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import MovieDetails from "./MovieDetails";
 import { IMovie } from "../../types";
+import { BrowserRouter } from "react-router-dom";
 
 describe("<MovieDetails />", () => {
   const mockMovie: IMovie = {
@@ -28,7 +29,8 @@ describe("<MovieDetails />", () => {
       <MovieDetails
         movie={mockMovie}
         onBackButtonClick={mockOnBackButtonClick}
-      />
+      />,
+      { wrapper: BrowserRouter }
     );
     expect(screen.getByText("Inception")).toBeInTheDocument();
     expect(screen.getByText("Action Drama")).toBeInTheDocument();
@@ -40,7 +42,8 @@ describe("<MovieDetails />", () => {
       <MovieDetails
         movie={mockMovie}
         onBackButtonClick={mockOnBackButtonClick}
-      />
+      />,
+      { wrapper: BrowserRouter }
     );
     fireEvent.click(screen.getByText("Search"));
     expect(mockOnBackButtonClick).toHaveBeenCalledWith(null);
@@ -51,7 +54,8 @@ describe("<MovieDetails />", () => {
       <MovieDetails
         movie={mockMovie}
         onBackButtonClick={mockOnBackButtonClick}
-      />
+      />,
+      { wrapper: BrowserRouter }
     );
     expect(screen.getByText("2h 28 min")).toBeInTheDocument();
   });
@@ -61,7 +65,8 @@ describe("<MovieDetails />", () => {
       <MovieDetails
         movie={mockMovie}
         onBackButtonClick={mockOnBackButtonClick}
-      />
+      />,
+      { wrapper: BrowserRouter }
     );
     expect(screen.getByText("8.8")).toBeInTheDocument();
   });

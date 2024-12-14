@@ -2,19 +2,19 @@ import React, { FC, HTMLAttributes, useState } from "react";
 import cl from "./MovieTile.module.css";
 import PopupMenu from "../UI/Popup/Popup";
 import Dialog from "../Dialog/Dialog";
-import MovieForm from "../MovieForm/MovieForm";
 import Button from "../UI/Button/Button";
 import { IMovie } from "../../types";
 import ImageWithFallback from "../ImageWithFallback/ImageWithFallback";
+import { useNavigate } from "react-router-dom";
 
 interface IMovieTileProps extends HTMLAttributes<HTMLDivElement> {
   movie: IMovie;
 }
 
 const MovieTile: FC<IMovieTileProps> = ({ movie, ...props }) => {
+  const navigate = useNavigate();
   const { title, poster_path, release_date, genres } = movie;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isEditModal, setIsEditModal] = useState(false);
   const [isRemoveConfirmation, setIsRemoveConfirmation] = useState(false);
 
   const toggleMenu = (e: React.MouseEvent) => {
@@ -24,8 +24,7 @@ const MovieTile: FC<IMovieTileProps> = ({ movie, ...props }) => {
 
   const handleEdit = (e: React.MouseEvent) => {
     e.stopPropagation();
-    console.log("Edit movie:", name);
-    setIsEditModal(true);
+    navigate(`/${movie.id}/edit`);
   };
 
   const handleDelete = (e: React.MouseEvent) => {
@@ -36,10 +35,6 @@ const MovieTile: FC<IMovieTileProps> = ({ movie, ...props }) => {
   const handleClose = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsMenuOpen(false);
-  };
-
-  const handleFormSubmit = (data: IMovie) => {
-    console.log("Submitted data:", data);
   };
 
   return (
@@ -69,11 +64,6 @@ const MovieTile: FC<IMovieTileProps> = ({ movie, ...props }) => {
           onDelete={handleDelete}
           onClose={handleClose}
         />
-      )}
-      {isEditModal && (
-        <Dialog title="EDIT" onClose={() => setIsEditModal(false)}>
-          <MovieForm initiaMovieState={movie} onSubmit={handleFormSubmit} />
-        </Dialog>
       )}
       {isRemoveConfirmation && (
         <Dialog

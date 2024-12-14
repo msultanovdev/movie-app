@@ -9,6 +9,7 @@ import MovieDetails from "../MovieDetails/MovieDetails";
 import Search from "../Search/Search";
 import { genres, moviesURL } from "../../consts";
 import {
+  Outlet,
   useLocation,
   useNavigate,
   useParams,
@@ -59,6 +60,7 @@ const MovieList: FC<IMovieListProps> = () => {
     error: movieError,
   } = useFetchData<IMovie>({
     url: `${moviesURL}/${movieId}`,
+    isRequestNeed: !!movieId,
   });
 
   const updateSearchParam = (key: string, value: string) => {
@@ -97,7 +99,9 @@ const MovieList: FC<IMovieListProps> = () => {
     <div className={cl.movieListWrapper} data-testid="cy-movie-list">
       <div className={cl.moviesListHeader}>
         {isMovieLoading && <p style={{ color: "white" }}>Loading...</p>}
-        {movieError && <p style={{ color: "white" }}>{movieError}</p>}
+        {movieError && movieId && (
+          <p style={{ color: "white" }}>{movieError}</p>
+        )}
         {selectedMovie ? (
           <MovieDetails movie={selectedMovie} />
         ) : (
@@ -108,6 +112,7 @@ const MovieList: FC<IMovieListProps> = () => {
             style={{ margin: "10px 0" }}
           />
         )}
+        <Outlet />
       </div>
       <div className="movies-sort">
         <GenreSelect
@@ -126,7 +131,7 @@ const MovieList: FC<IMovieListProps> = () => {
           {movies.length} movies found
         </p>
       ) : null}
-      {isLoading && <p>Loading...</p>}
+      {isLoading && <p data-testid="movies-loading">Loading...</p>}
       {error && <p>{error}</p>}
       <div className={cl.movieList}>
         {movies?.length

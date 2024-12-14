@@ -3,6 +3,7 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import MovieTile from "./MovieTile";
 import { IMovie } from "../../types";
+import { BrowserRouter } from "react-router-dom";
 
 describe("<MovieTile />", () => {
   const mockMovie: IMovie = {
@@ -21,7 +22,7 @@ describe("<MovieTile />", () => {
   };
 
   it("renders movie information correctly", () => {
-    render(<MovieTile movie={mockMovie} />);
+    render(<MovieTile movie={mockMovie} />, { wrapper: BrowserRouter });
     expect(screen.getByText(mockMovie.title)).toBeInTheDocument();
     expect(
       screen.getByText(
@@ -36,7 +37,7 @@ describe("<MovieTile />", () => {
   });
 
   it("applies proper class names for styling", () => {
-    render(<MovieTile movie={mockMovie} />);
+    render(<MovieTile movie={mockMovie} />, { wrapper: BrowserRouter });
     const mainDiv = screen.getByRole("img", {
       name: `${mockMovie.title} Poster`,
     }).parentElement;

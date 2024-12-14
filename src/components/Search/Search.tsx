@@ -10,22 +10,24 @@ const Search: FC<ISearchProps> = ({ query, setQuery, onSearch, ...props }) => {
   };
 
   return (
-    <form className={cl.searchForm} {...props}>
-      <input
-        data-testid="cy-search-input"
-        value={query}
-        type="text"
-        placeholder="What do you want to watch?"
-        onChange={(e) => setQuery(e.target.value)}
-      />
-      <Button
-        data-testid="cy-search-submit"
-        type="submit"
-        onClick={handleSearch}
-      >
-        Search
-      </Button>
-    </form>
+    <>
+      <form className={cl.searchForm} {...props}>
+        <input
+          data-testid="cy-search-input"
+          value={query}
+          type="text"
+          placeholder="What do you want to watch?"
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        <Button
+          data-testid="cy-search-submit"
+          type="submit"
+          onClick={handleSearch}
+        >
+          Search
+        </Button>
+      </form>
+    </>
   );
 };
 
